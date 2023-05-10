@@ -1,0 +1,64 @@
+{
+    "settingsSync.keybindingsPerPlatform": false,
+    "telemetry.telemetryLevel": "off",
+    "update.mode": "start",
+    "files.autoSave": "afterDelay",
+    "editor.fontFamily": "FiraCode Nerd Font Mono, Arial",
+    "editor.fontSize": 12,
+    "settingsSync.ignoredSettings": [
+        "editor.fontSize"
+    ],
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.smoothScrolling": true,
+    "editor.lineNumbers": "relative",
+    "editor.cursorSurroundingLines": 12,
+    "editor.minimap.autohide": true,
+    "editor.minimap.renderCharacters": false,
+    "workbench.editor.wrapTabs": true,
+    "workbench.layoutControl.enabled": false,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "vscode-neovim.useCtrlKeysForInsertMode": false,
+    "workbench.colorTheme": "Panda Syntax",
+    "workbench.colorCustomizations": {
+        "[Panda Syntax]": {
+            "editorInlayHint.background": "#00000000",
+            "editorInlayHint.foreground": "#757575"
+        }
+    },
+    "editor.semanticTokenColorCustomizations": {
+        "[Panda Syntax]": {
+            "enabled": true,
+            "rules": {
+                "namespace" : { "foreground": "#BCAAFE" }, 
+                "class" : { "foreground": "#FF9AC1" }, 
+                "enum" : { "foreground": "#B084EB" }, 
+                "interface" : { "foreground": "#FFCC95", "italic": true }, 
+                "struct" : { "foreground": "#6FE7D2" }, 
+                "typeParameter" : { "foreground": "#FFB86C" }, 
+                "builtinType" : { "foreground": "#FFB86C" }, 
+                // "type" : { "foreground": "#FFB86C" }, 
+                "parameter" : { "italic": true, "bold": true },
+                // "variable" : { "foreground": "#FFB86C" }, 
+                "variable.constant" : { "foreground": "#B084EB" }, 
+                // "property" : { "foreground": "#FFB86C" }, 
+                "enumMember" : { "foreground": "#B084EB", "italic": true },
+                // "decorator" : { "foreground": "#FFB86C" }, 
+                // "event" : { "foreground": "#FFB86C" }, 
+                // "function" : { "foreground": "#FFB86C" }, 
+                // "method" : { "foreground": "#FFB86C" }, 
+                "macro" : { "foreground": "#B084EB", "italic": true }, 
+                "label" : { "foreground": "#B084EB", "italic": true }, 
+                // "comment" : { "foreground": "#FFB86C" }, 
+                "description" : { "foreground": "#ff0000" }, // NECESSARY FOR VHDL BUT NOT KNOW WHY
+                // "string" : { "foreground": "#FFB86C" }, 
+                "keyword" : { "foreground": "#FF75B5", "italic": true} 
+                // "number" : { "foreground": "#FFB86C" }, 
+                // "regexp" : { "foreground": "#FFB86C" }, 
+                // "operator" : { "foreground": "#FFB86C" }, 
+            }
+        }
+    },
+    "clangd.path": "c:\\Users\\llmer\\AppData\\Roaming\\Code\\User\\globalStorage\\llvm-vs-code-extensions.vscode-clangd\\install\\16.0.2\\clangd_16.0.2\\bin\\clangd.exe"
+}
