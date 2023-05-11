@@ -16,6 +16,7 @@
     "editor.minimap.renderCharacters": false,
     "workbench.editor.wrapTabs": true,
     "workbench.layoutControl.enabled": false,
+    "workbench.editor.pinnedTabSizing": "compact",
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
     },

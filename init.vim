@@ -99,3 +99,9 @@ vnoremap    <leader>;   :'<'>norm A;<CR>
 vnoremap    <leader>,   :'<'>norm A,<CR>
 vnoremap    <leader>.   :'<'>norm A.<CR>
 vnoremap    <leader>/   :'<'>norm $x<CR>
+
+
+" FINISH LOADING ENV
+if g:ENV_IS_NVM
+    lua require("core")
+endif
