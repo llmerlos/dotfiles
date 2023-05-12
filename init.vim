@@ -46,8 +46,8 @@ noremap     <C-u>       12kzz
 
 "" COMMENT
 if g:ENV_IS_VSC 
-    nnoremap <leader>ct <Cmd>call VSCodeNotify('editor.action.commentLine')<CR>
-    vnoremap <leader>ct <Cmd>call VSCodeNotifyVisual('editor.action.commentLine', 1)<CR>
+    nnoremap <leader>ct <Plug>VSCodeCommentaryLine
+    vnoremap <leader>ct <Plug>VSCodeCommentary
 endif
 
 "" RUN
@@ -101,7 +101,68 @@ vnoremap    <leader>.   :'<'>norm A.<CR>
 vnoremap    <leader>/   :'<'>norm $x<CR>
 
 
-" FINISH LOADING ENV
+" Plugins
+if g:ENV_IS_LUA
+lua << EOF
+    local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+    if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        'git',
+        'clone',
+        '--filter=blob:none',
+        'https://github.com/folke/lazy.nvim.git',
+        '--branch=stable', -- latest stable release
+        lazypath,
+    })
+    end
+    vim.opt.rtp:prepend(lazypath)
+
+    pl_hop = {
+        'phaazon/hop.nvim',
+        branch = 'v2',
+        config = function(_, opts)
+            require('hop').setup({ keys = 'neiohtsrad' })
+            
+            local hop = require('hop')
+            local directions = require('hop.hint').HintDirection
+            vim.keymap.set('', 's', function()
+                hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false })
+            end, {remap=true})
+            vim.keymap.set('', 'S', function()
+                hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false })
+            end, {remap=true}) 
+        end
+    }
+
+    pl_telescope = {
+        'nvim-telescope/telescope.nvim',
+        tag = '0.1.1',
+        dependencies = {
+            'nvim-lua/plenary.nvim'
+        },
+        keys = {
+            {'<C-p>', '<cmd>Telescope find_files<cr>', desc = 'TSCP Find Files'},
+        },
+        config = function(_, opts)
+            require('telescope').setup{}
+        end,
+    }
+    
+    pl_th_kanagawa = {
+        'rebelot/kanagawa.nvim',
+        priority=1000,
+        config = function()
+            vim.cmd.colorscheme('kanagawa')
+        end
+    }
+
+EOF
+endif
+
+if g:ENV_IS_VSC
+    lua require('lazy').setup({pl_hop})
+endif
+
 if g:ENV_IS_NVM
-    lua require("core")
+    lua require('lazy').setup({pl_hop, pl_telescope, pl_th_kanagawa})
 endif
