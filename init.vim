@@ -121,7 +121,7 @@ lua << EOF
         'phaazon/hop.nvim',
         branch = 'v2',
         config = function(_, opts)
-            require('hop').setup({ keys = 'neiohtsrad' })
+            require('hop').setup({ keys = 'ntesiroazxchd' })
             
             local hop = require('hop')
             local directions = require('hop.hint').HintDirection
