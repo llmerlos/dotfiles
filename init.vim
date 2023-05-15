@@ -58,7 +58,12 @@ endif
 
 "" SEARCH
 noremap     <leader>sh  :nohls<CR>
-nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>
+ 
+if g:ENV_IS_VSC
+    nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>
+else
+    nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>/gc<Left><Left><Left>
+endif
 
 "" SELECT ALL
 nnoremap    <leader><leader>a   gg0vG$    
@@ -70,6 +75,12 @@ vnoremap    <Tab>       >gv
 vnoremap    <s-Tab>     <lt>gv
 nnoremap    <Tab>       >>
 nnoremap    <s-Tab>     <lt><lt>
+
+"" MOVE LINES
+nnoremap    <M-Up>      :m .-2<CR>==
+nnoremap    <M-Down>    :m .+1<CR>==
+vnoremap    <M-Up>      :m '<-2<CR>gv
+vnoremap    <M-Down>    :m '>+1<CR>gv
 
 "" CLIPBOARD
 noremap     c           "_c
@@ -87,22 +98,23 @@ noremap     <leader>c   c
 nnoremap    <leader>cc  cc
 noremap     <leader>C   C
 noremap     <leader>d   d
-nnoremap     <leader>dd  dd
+nnoremap    <leader>dd  dd
 noremap     <leader>D   D
 
 "" APPEND ,;. TO END OF LINE
-nnoremap    <leader>;   mrA;<ESC>`r
-nnoremap    <leader>,   mrA,<ESC>`r
-nnoremap    <leader>.   mrA.<ESC>`r
-nnoremap    <leader>/   mr$x`r
-vnoremap    <leader>;   :'<'>norm A;<CR>
-vnoremap    <leader>,   :'<'>norm A,<CR>
-vnoremap    <leader>.   :'<'>norm A.<CR>
-vnoremap    <leader>/   :'<'>norm $x<CR>
+nnoremap    <leader>;;   mrA;<ESC>`r
+nnoremap    <leader>;,   mrA,<ESC>`r
+nnoremap    <leader>;.   mrA.<ESC>`r
+nnoremap    <leader>;d   mr$x`r
+vnoremap    <leader>;;   :'<'>norm A;<CR>
+vnoremap    <leader>;,   :'<'>norm A,<CR>
+vnoremap    <leader>;.   :'<'>norm A.<CR>
+vnoremap    <leader>;d   :'<'>norm $x<CR>
 
 
 " Plugins
-if g:ENV_IS_LUA
+if g:ENV_IS_NVM " Should be LUA but not plugins in VSC for now
+" if g:ENV_IS_LUA
 lua << EOF
     local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
     if not vim.loop.fs_stat(lazypath) then
@@ -117,20 +129,11 @@ lua << EOF
     end
     vim.opt.rtp:prepend(lazypath)
 
-    pl_hop = {
-        'phaazon/hop.nvim',
-        branch = 'v2',
-        config = function(_, opts)
-            require('hop').setup({ keys = 'ntesiroazxchd' })
-            
-            local hop = require('hop')
-            local directions = require('hop.hint').HintDirection
-            vim.keymap.set('', 's', function()
-                hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false })
-            end, {remap=true})
-            vim.keymap.set('', 'S', function()
-                hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false })
-            end, {remap=true}) 
+    pl_th_kanagawa = {
+        'rebelot/kanagawa.nvim',
+        priority=1000,
+        config = function()
+            vim.cmd.colorscheme('kanagawa')
         end
     }
 
@@ -142,27 +145,33 @@ lua << EOF
         },
         keys = {
             {'<C-p>', '<cmd>Telescope find_files<cr>', desc = 'TSCP Find Files'},
+            {'<leader>sp', '<cmd>Telescope live_grep<cr>', desc = 'TSCP Live Grep'},
         },
         config = function(_, opts)
             require('telescope').setup{}
         end,
     }
     
-    pl_th_kanagawa = {
-        'rebelot/kanagawa.nvim',
-        priority=1000,
-        config = function()
-            vim.cmd.colorscheme('kanagawa')
-        end
+    pl_treesitter = {
+        'nvim-treesitter/nvim-treesitter',
+        version = false,
+        build = ':TSUpdate',
+        opts = {
+            ensure_installed =  { 'lua', 'vim', 'vimdoc', 'c', 'rust' },
+            sync_install = false,
+            auto_install = true,
+            highlight = { enable = true },
+            indent = { enable = true },
+        },
+        config = function(_, opts)
+            require('nvim-treesitter.configs').setup(opts)
+        end,
     }
-
+    
 EOF
 endif
 
-if g:ENV_IS_VSC
-    lua require('lazy').setup({pl_hop})
-endif
 
 if g:ENV_IS_NVM
-    lua require('lazy').setup({pl_hop, pl_telescope, pl_th_kanagawa})
+    lua require('lazy').setup({pl_telescope, pl_th_kanagawa, pl_treesitter})
 endif
