@@ -65,8 +65,9 @@ else
     nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>/gc<Left><Left><Left>
 endif
 
-"" SELECT ALL
+"" CONFLICTING KEYMAPS
 nnoremap    <leader><leader>a   gg0vG$    
+nnoremap    <leader><leader>v   <C-v>
 
 "" BLOCK INDENT
 vnoremap    >           >gv
