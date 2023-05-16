@@ -101,6 +101,7 @@ noremap     <leader>C   C
 noremap     <leader>d   d
 nnoremap    <leader>dd  dd
 noremap     <leader>D   D
+vnoremap    p           "_dP
 
 "" APPEND ,;. TO END OF LINE
 nnoremap    <leader>;;   mrA;<ESC>`r
