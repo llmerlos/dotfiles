@@ -104,19 +104,19 @@ noremap     <leader>D   D
 vnoremap    p           "_dP
 
 "" APPEND ,;. TO END OF LINE
-nnoremap    <leader>;;   mrA;<ESC>`r
-nnoremap    <leader>;,   mrA,<ESC>`r
-nnoremap    <leader>;.   mrA.<ESC>`r
-nnoremap    <leader>;d   mr$x`r
-vnoremap    <leader>;;   :'<'>norm A;<CR>
-vnoremap    <leader>;,   :'<'>norm A,<CR>
-vnoremap    <leader>;.   :'<'>norm A.<CR>
-vnoremap    <leader>;d   :'<'>norm $x<CR>
+nnoremap    <leader>;   mrA;<ESC>`r
+nnoremap    <leader>,   mrA,<ESC>`r
+nnoremap    <leader>.   mrA.<ESC>`r
+nnoremap    <leader>$   mr$x`r
+vnoremap    <leader>;   :'<'>norm A;<CR>
+vnoremap    <leader>,   :'<'>norm A,<CR>
+vnoremap    <leader>.   :'<'>norm A.<CR>
+vnoremap    <leader>$   :'<'>norm $x<CR>
 
 
 " Plugins
-if g:ENV_IS_NVM " Should be LUA but not plugins in VSC for now
-" if g:ENV_IS_LUA
+" if g:ENV_IS_NVM " Should be LUA but not plugins in VSC for now
+if g:ENV_IS_LUA
 lua << EOF
     local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
     if not vim.loop.fs_stat(lazypath) then
@@ -170,10 +170,20 @@ lua << EOF
         end,
     }
     
+    pl_align = { 
+        'echasnovski/mini.align', 
+        version = '*',
+        config = function(_, opts)
+            require('mini.align').setup(opts)
+        end,
+    }
 EOF
 endif
 
+if g:ENV_IS_VSC
+    lua require('lazy').setup({pl_align})
+endif
 
 if g:ENV_IS_NVM
-    lua require('lazy').setup({pl_telescope, pl_th_kanagawa, pl_treesitter})
+    lua require('lazy').setup({pl_telescope, pl_th_kanagawa, pl_treesitter, pl_align})
 endif
