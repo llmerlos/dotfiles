@@ -44,26 +44,9 @@ nnoremap    U           <C-R>
 noremap     <C-d>       12jzz
 noremap     <C-u>       12kzz
 
-"" COMMENT
-if g:ENV_IS_VSC 
-    nnoremap <leader>ct <Plug>VSCodeCommentaryLine
-    vnoremap <leader>ct <Plug>VSCodeCommentary
-endif
-
-"" RUN
-if g:ENV_IS_VSC 
-    nnoremap <leader>rs <Cmd>call VSCodeNotify('workbench.action.debug.run')<CR>
-    nnoremap <leader>rd <Cmd>call VSCodeNotify('workbench.action.debug.start')<CR>
-endif
-
 "" SEARCH
 noremap     <leader>sh  :nohls<CR>
- 
-if g:ENV_IS_VSC
-    nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>
-else
-    nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>/gc<Left><Left><Left>
-endif
+nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>/gc<Left><Left><Left>
 
 "" CONFLICTING KEYMAPS
 nnoremap    <leader><leader>a   gg0vG$    
@@ -113,6 +96,10 @@ vnoremap    <leader>,   :'<'>norm A,<CR>
 vnoremap    <leader>.   :'<'>norm A.<CR>
 vnoremap    <leader>$   :'<'>norm $x<CR>
 
+"" Checkbox ( https://marcelfischer.eu/blog/2019/checkbox-regex/ )
+noremap    <leader>ti  :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze./[<space>]<space>/<CR> <bar> :nohls<CR>
+noremap    <leader>tc  :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze./[x]<space>/<CR> <bar> :nohls<CR>
+noremap    <leader>td  :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze.//<CR> <bar> :nohls<CR>
 
 " Plugins
 " if g:ENV_IS_NVM " Should be LUA but not plugins in VSC for now
@@ -181,6 +168,15 @@ EOF
 endif
 
 if g:ENV_IS_VSC
+    nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>
+    nnoremap    <leader>sw  <Cmd>call VSCodeNotify('actions.find', { 'searchString': expand('<cword>')})<CR>
+
+    nnoremap    <leader>ct <Plug>VSCodeCommentaryLine
+    vnoremap    <leader>ct <Plug>VSCodeCommentary
+
+    nnoremap    <leader>rs <Cmd>call VSCodeNotify('workbench.action.debug.run')<CR>
+    nnoremap    <leader>rd <Cmd>call VSCodeNotify('workbench.action.debug.start')<CR>
+    
     lua require('lazy').setup({pl_align})
 endif
 
