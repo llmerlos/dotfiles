@@ -118,14 +118,19 @@ lua << EOF
     end
     vim.opt.rtp:prepend(lazypath)
 
-    pl_th_kanagawa = {
-        'rebelot/kanagawa.nvim',
+-- GUI
+--------------------------------------------------------------------------------
+    pl_theme = {
+        'AlexvZyl/nordic.nvim',
+        lazy=false,
         priority=1000,
         config = function()
-            vim.cmd.colorscheme('kanagawa')
+            vim.cmd.colorscheme('nordic')
         end
     }
 
+-- IDE-like
+--------------------------------------------------------------------------------
     pl_telescope = {
         'nvim-telescope/telescope.nvim',
         tag = '0.1.1',
@@ -133,8 +138,8 @@ lua << EOF
             'nvim-lua/plenary.nvim'
         },
         keys = {
-            {'<C-p>', '<cmd>Telescope find_files<cr>', desc = 'TSCP Find Files'},
-            {'<leader>sp', '<cmd>Telescope live_grep<cr>', desc = 'TSCP Live Grep'},
+            {'<leader>ff', '<cmd>Telescope find_files<cr>', desc = 'TSCP Find Files'},
+            {'<leader>fs', '<cmd>Telescope live_grep<cr>', desc = 'TSCP Live Grep'},
         },
         config = function(_, opts)
             require('telescope').setup{}
@@ -157,6 +162,27 @@ lua << EOF
         end,
     }
     
+    pl_files = { 
+        'echasnovski/mini.files', 
+        version = '*',
+        config = function(_, opts)
+            require('mini.files').setup(opts)
+        end,
+        keys = {
+            {'<leader>fe', '<cmd>:lua MiniFiles.open()<cr>', desc = 'MiniFiles'}
+        }
+    }
+
+-- Text edit
+--------------------------------------------------------------------------------
+    pl_jump = { 
+        'echasnovski/mini.jump', 
+        version = '*',
+        config = function(_, opts)
+            require('mini.jump').setup(opts)
+        end,
+    }
+
     pl_align = { 
         'echasnovski/mini.align', 
         version = '*',
@@ -164,6 +190,18 @@ lua << EOF
             require('mini.align').setup(opts)
         end,
     }
+
+    pl_comment = { 
+        'echasnovski/mini.comment', 
+        version = '*',
+        config = function(_, opts)
+            opts.mappings = {
+                comment_line = 'gc'
+            }
+            require('mini.comment').setup(opts)
+        end,
+    }
+
 EOF
 endif
 
@@ -171,15 +209,15 @@ if g:ENV_IS_VSC
     nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>
     nnoremap    <leader>sw  <Cmd>call VSCodeNotify('actions.find', { 'searchString': expand('<cword>')})<CR>
 
-    nnoremap    <leader>ct <Plug>VSCodeCommentaryLine
-    vnoremap    <leader>ct <Plug>VSCodeCommentary
+    nnoremap    gc          <Plug>VSCodeCommentaryLine
+    vnoremap    gc          <Plug>VSCodeCommentary
 
     nnoremap    <leader>rs <Cmd>call VSCodeNotify('workbench.action.debug.run')<CR>
     nnoremap    <leader>rd <Cmd>call VSCodeNotify('workbench.action.debug.start')<CR>
     
-    lua require('lazy').setup({pl_align})
+    lua require('lazy').setup({pl_align, pl_jump})
 endif
 
 if g:ENV_IS_NVM
-    lua require('lazy').setup({pl_telescope, pl_th_kanagawa, pl_treesitter, pl_align})
+    lua require('lazy').setup({pl_theme, pl_files, pl_telescope, pl_treesitter, pl_align, pl_jump, pl_comment})
 endif
