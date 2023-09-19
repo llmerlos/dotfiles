@@ -121,11 +121,28 @@ lua << EOF
 -- GUI
 --------------------------------------------------------------------------------
     pl_theme = {
-        'AlexvZyl/nordic.nvim',
+        'RRethy/nvim-base16',
         lazy=false,
         priority=1000,
         config = function()
-            vim.cmd.colorscheme('nordic')
+            require('base16-colorscheme').setup({
+                base00 = '#292929',
+                base01 = '#333333',
+                base02 = '#373737',
+                base03 = '#676767',
+                base04 = '#b8b8b8',
+                base05 = '#efefef',
+                base06 = '#f8f8f8',
+                base07 = '#fdfdfd',
+                base08 = '#FFB86C',
+                base09 = '#BCAAFE',
+                base0A = '#FF4B82',
+                base0B = '#19f9d8',
+                base0C = '#45A9F9',
+                base0D = '#6FC1FF',
+                base0E = '#FF75B5',
+                base0F = '#808080',
+            })
         end
     }
 
@@ -138,14 +155,21 @@ lua << EOF
             'nvim-lua/plenary.nvim'
         },
         keys = {
-            {'<leader>ff', '<cmd>Telescope find_files<cr>', desc = 'TSCP Find Files'},
+            {'<leader>fp', '<cmd>Telescope find_files<cr>', desc = 'TSCP Find Files'},
             {'<leader>fs', '<cmd>Telescope live_grep<cr>', desc = 'TSCP Live Grep'},
+            {'<leader>fe', '<cmd>Telescope file_browser<cr>', desc = 'TSCP File Browser'},
         },
         config = function(_, opts)
             require('telescope').setup{}
+            require("telescope").load_extension "file_browser"
         end,
     }
     
+    pl_files = {
+        'nvim-telescope/telescope-file-browser.nvim',
+        dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' }
+    }
+
     pl_treesitter = {
         'nvim-treesitter/nvim-treesitter',
         version = false,
@@ -160,17 +184,6 @@ lua << EOF
         config = function(_, opts)
             require('nvim-treesitter.configs').setup(opts)
         end,
-    }
-    
-    pl_files = { 
-        'echasnovski/mini.files', 
-        version = '*',
-        config = function(_, opts)
-            require('mini.files').setup(opts)
-        end,
-        keys = {
-            {'<leader>fe', '<cmd>:lua MiniFiles.open()<cr>', desc = 'MiniFiles'}
-        }
     }
 
 -- Text edit
