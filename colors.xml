@@ -34,11 +34,9 @@ _charcoal: '#222223' # Use for borders between gray backgrounds
 _blue: '#45A9F9'
 _light-blue: '#6FC1FF'
 _purple: '#B084EB'
-_purple-fade: '#B084EB60'
 _light-purple: '#BCAAFE'
 _green: '#19f9d8'
 _light-green: '#6FE7D2'
-_green-fade: '#19f9d899'
 # -----------------------------------------------------------------------------
 # Pink+Red+Orange
 # -----------------------------------------------------------------------------
@@ -46,10 +44,8 @@ _red: '#FF2C6D'
 _light-red: '#FF4B82'
 _orange: '#FFB86C'
 _light-orange: '#FFCC95'
-_light-orange-fade: '#FFCC9560'
 _pink: '#FF75B5'
 _light-pink: '#FF9AC1'
-_light-pink-fade: '#FF9AC170'
 # -----------------------------------------------------------------------------
 # Element Colors
 # -----------------------------------------------------------------------------

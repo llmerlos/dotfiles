@@ -4,8 +4,8 @@
   "mini.comment": { "branch": "main", "commit": "877acea5b2a32ff55f808fc0ebe9aa898648318c" },
   "mini.jump": { "branch": "main", "commit": "5d48b26f98ce77d4575c1eb181727fa37ed3fbc6" },
   "nvim-base16": { "branch": "master", "commit": "96e308958625a84940d5e443475465abf99c7bd9" },
-  "nvim-treesitter": { "branch": "master", "commit": "f9034812d8335356ef3ede49110d1569624033fa" },
+  "nvim-treesitter": { "branch": "master", "commit": "940916074833159bf7b8cbb4bf5e59161461fa5a" },
   "plenary.nvim": { "branch": "master", "commit": "9ce85b0f7dcfe5358c0be937ad23e456907d410b" },
-  "telescope-file-browser.nvim": { "branch": "master", "commit": "bec4b0fd6c293f5c42d7929d8eff49e5af43e7f3" },
+  "telescope-file-browser.nvim": { "branch": "master", "commit": "c3670c088bfb83e892ae69989875a1dfdd5cff99" },
   "telescope.nvim": { "branch": "master", "commit": "c1a2af0af69e80e14e6b226d3957a064cd080805" }
 }
