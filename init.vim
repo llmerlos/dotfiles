@@ -1,6 +1,7 @@
 " ENVIRONMENT DETECT
 let g:ENV_IS_LUA = has('nvim')
 let g:ENV_IS_VSC = exists('g:vscode')
+let g:ENV_IS_NVD = exists('g:neovide')
 let g:ENV_IS_NVM = g:ENV_IS_LUA && !g:ENV_IS_VSC 
 let g:ENV_IS_ITJ = has('ide')
 let g:ENV_IS_VIM = !g:ENV_IS_LUA && !g:ENV_IS_ITJ
@@ -233,4 +234,9 @@ endif
 
 if g:ENV_IS_NVM
     lua require('lazy').setup({pl_theme, pl_files, pl_telescope, pl_treesitter, pl_align, pl_jump, pl_comment})
+endif
+
+if g:ENV_IS_NVD
+    set guifont=FiraCode\ Nerd\ Font\ Mono:h13
+    let g:neovide_cursor_animation_length = 0.05
 endif
