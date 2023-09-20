@@ -41,7 +41,13 @@ let mapleader=" "
 " BUFFER
 nnoremap <silent>   <C-I>   :bp<CR>
 nnoremap <silent>   <C-O>   :bn<CR>
-nnoremap <silent>   <C-W>   :bd<CR>
+nnoremap <silent>   <C-Q>   :bd<CR>
+
+" WINDOW
+nnoremap <silent>   <leader>wi   <C-W>h
+nnoremap <silent>   <leader>wo   <C-W>l
+nnoremap <silent>   <leader>wu   <C-W>k
+nnoremap <silent>   <leader>wd   <C-W>j
 
 "" MISC
 nnoremap    Q           @
@@ -98,11 +104,11 @@ vnoremap    p           "_dP
 nnoremap    <leader>;   mrA;<ESC>`r
 nnoremap    <leader>,   mrA,<ESC>`r
 nnoremap    <leader>.   mrA.<ESC>`r
-nnoremap    <leader>$   mr$x`r
+nnoremap    <leader>$   mr$"_x`r
 vnoremap    <leader>;   :'<'>norm A;<CR>
 vnoremap    <leader>,   :'<'>norm A,<CR>
 vnoremap    <leader>.   :'<'>norm A.<CR>
-vnoremap    <leader>$   :'<'>norm $x<CR>
+vnoremap    <leader>$   :'<'>norm $"_x<CR>
 
 "" Checkbox ( https://marcelfischer.eu/blog/2019/checkbox-regex/ )
 noremap    <leader>ti  :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze./[<space>]<space>/<CR> <bar> :nohls<CR>
@@ -170,7 +176,13 @@ lua << EOF
             {'<leader>fw', ':lua require"telescope".extensions.project.project{}<CR>', desc = 'TSCP Projects'},
         },
         config = function(_, opts)
-            require('telescope').setup{}
+            require('telescope').setup({
+                extensions = {
+                    file_browser = {
+                        follow_symlinks = true
+                    }
+                }
+            })
             require("telescope").load_extension "file_browser"
             require("telescope").load_extension "project"
         end,
