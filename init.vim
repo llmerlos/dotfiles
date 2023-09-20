@@ -41,7 +41,7 @@ let mapleader=" "
 " BUFFER
 nnoremap <silent>   <C-I>   :bp<CR>
 nnoremap <silent>   <C-O>   :bn<CR>
-nnoremap <silent>   <C-;>   :bd<CR>
+nnoremap <silent>   <C-W>   :bd<CR>
 
 "" MISC
 nnoremap    Q           @
@@ -270,4 +270,6 @@ endif
 if g:ENV_IS_NVD
     set guifont=FiraCode\ Nerd\ Font\ Mono:h13
     let g:neovide_cursor_animation_length = 0.05
+    let g:neovide_refresh_rate = 165
+    let g:neovide_refresh_rate_idle = 5
 endif
