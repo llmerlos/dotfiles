@@ -25,6 +25,8 @@ if !g:ENV_IS_VSC && !g:ENV_IS_ITJ
     set scrolloff=8
     
     set mouse=a
+
+    set termguicolors
 endif
 
 set noswapfile
@@ -35,6 +37,11 @@ set clipboard^=unnamedplus
 
 " REMAPS
 let mapleader=" "
+
+" BUFFER
+nnoremap <silent>   <C-I>   :bp<CR>
+nnoremap <silent>   <C-O>   :bn<CR>
+nnoremap <silent>   <C-;>   :bd<CR>
 
 "" MISC
 nnoremap    Q           @
@@ -153,22 +160,38 @@ lua << EOF
         'nvim-telescope/telescope.nvim',
         tag = '0.1.1',
         dependencies = {
-            'nvim-lua/plenary.nvim'
+            'nvim-lua/plenary.nvim',
+            'nvim-tree/nvim-web-devicons'
         },
         keys = {
             {'<leader>fp', '<cmd>Telescope find_files<cr>', desc = 'TSCP Find Files'},
             {'<leader>fs', '<cmd>Telescope live_grep<cr>', desc = 'TSCP Live Grep'},
             {'<leader>fe', '<cmd>Telescope file_browser<cr>', desc = 'TSCP File Browser'},
+            {'<leader>fw', ':lua require"telescope".extensions.project.project{}<CR>', desc = 'TSCP Projects'},
         },
         config = function(_, opts)
             require('telescope').setup{}
             require("telescope").load_extension "file_browser"
+            require("telescope").load_extension "project"
         end,
     }
     
     pl_files = {
         'nvim-telescope/telescope-file-browser.nvim',
         dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' }
+    }
+    
+    pl_project = {
+        'nvim-telescope/telescope-project.nvim',
+        dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-telescope/telescope-file-browser.nvim' }
+    }
+    
+    pl_tabline = { 
+        'echasnovski/mini.tabline', 
+        version = '*',
+        config = function(_, opts)
+            require('mini.tabline').setup(opts)
+        end,
     }
 
     pl_treesitter = {
@@ -189,14 +212,6 @@ lua << EOF
 
 -- Text edit
 --------------------------------------------------------------------------------
-    pl_jump = { 
-        'echasnovski/mini.jump', 
-        version = '*',
-        config = function(_, opts)
-            require('mini.jump').setup(opts)
-        end,
-    }
-
     pl_align = { 
         'echasnovski/mini.align', 
         version = '*',
@@ -215,6 +230,22 @@ lua << EOF
             require('mini.comment').setup(opts)
         end,
     }
+    
+    pl_jump = { 
+        'echasnovski/mini.jump', 
+        version = '*',
+        config = function(_, opts)
+            require('mini.jump').setup(opts)
+        end,
+    }
+    
+    pl_surround = { 
+        'echasnovski/mini.surround', 
+        version = '*',
+        config = function(_, opts)
+            require('mini.surround').setup(opts)
+        end,
+    }
 
 EOF
 endif
@@ -229,11 +260,11 @@ if g:ENV_IS_VSC
     nnoremap    <leader>rs <Cmd>call VSCodeNotify('workbench.action.debug.run')<CR>
     nnoremap    <leader>rd <Cmd>call VSCodeNotify('workbench.action.debug.start')<CR>
     
-    lua require('lazy').setup({pl_align, pl_jump})
+    lua require('lazy').setup({pl_align, pl_jump, pl_surround})
 endif
 
 if g:ENV_IS_NVM
-    lua require('lazy').setup({pl_theme, pl_files, pl_telescope, pl_treesitter, pl_align, pl_jump, pl_comment})
+    lua require('lazy').setup({pl_theme, pl_files, pl_project, pl_telescope, pl_tabline, pl_treesitter, pl_align, pl_comment, pl_jump, pl_surround})
 endif
 
 if g:ENV_IS_NVD

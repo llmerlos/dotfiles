@@ -86,7 +86,7 @@
     },
 // Switch between tabs
     {
-        "key": "ctrl+tab",
+        "key": "ctrl+o",
         "command": "workbench.action.nextEditor",
         "when": "!terminalFocus" 
     },
@@ -95,7 +95,7 @@
         "command": "-workbench.action.nextEditor"
     },
     {
-        "key": "ctrl+shift+tab",
+        "key": "ctrl+i",
         "command": "workbench.action.previousEditor",
         "when": "!terminalFocus" 
     },
@@ -117,5 +117,9 @@
         "key": "ctrl+f5",
         "command": "-workbench.action.debug.run",
         "when": "debuggersAvailable && debugState != 'initializing'"
+    },
+    {
+        "key": "ctrl+;",
+        "command": "workbench.action.closeActiveEditor"
     }
 ]
