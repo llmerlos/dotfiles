@@ -135,29 +135,13 @@ lua << EOF
 -- GUI
 --------------------------------------------------------------------------------
     pl_theme = {
-        'RRethy/nvim-base16',
+        'gbprod/nord.nvim',
         lazy=false,
         priority=1000,
         config = function()
-            require('base16-colorscheme').setup({
-                base00 = '#2a2c2d',
-                base01 = '#31353a',
-                base02 = '#373B41',
-                base03 = '#676B79',
-                base04 = '#BBBBBB',
-                base05 = '#E6E6E6',
-                base06 = '#F8F8F8',
-                base07 = '#FDFDFD',
-                base08 = '#FFCC95',
-                base09 = '#FFB86C',
-                base0A = '#BCAAFE',
-                base0B = '#19F9D8',
-                base0C = '#B084EB',
-                base0D = '#6FC1FF',
-                base0E = '#FF75B5',
-                base0F = '#808080',
-            })
-        end
+            require("nord").setup({})
+            vim.cmd.colorscheme("nord")
+        end,
     }
 
 -- IDE-like
