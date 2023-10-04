@@ -195,7 +195,7 @@ lua << EOF
         version = false,
         build = ':TSUpdate',
         opts = {
-            ensure_installed =  { 'lua', 'vim', 'vimdoc', 'c', 'rust' },
+            ensure_installed =  { 'lua', 'vim', 'vimdoc', 'c', 'python' },
             sync_install = false,
             auto_install = true,
             highlight = { enable = true },
