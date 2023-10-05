@@ -264,7 +264,7 @@ if g:ENV_IS_NVM
 endif
 
 if g:ENV_IS_NVD
-    set guifont=FiraCode\ Nerd\ Font\ Mono:h13
+    set guifont=JetBrainsMonoNLNFM-SemiBold:h13
     let g:neovide_cursor_animation_length = 0.05
     let g:neovide_refresh_rate = 165
     let g:neovide_refresh_rate_idle = 5

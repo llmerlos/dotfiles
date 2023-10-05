@@ -3,7 +3,7 @@
     "telemetry.telemetryLevel": "off",
     "update.mode": "start",
     "files.autoSave": "afterDelay",
-    "editor.fontFamily": "FiraCode Nerd Font Mono, Arial",
+    "editor.fontFamily": "JetBrainsMonoNLNFM-SemiBold, FiraCode Nerd Font Mono, Arial",
     "editor.fontSize": 12,
     "settingsSync.ignoredSettings": [
         "editor.fontSize"
@@ -12,8 +12,6 @@
     "editor.smoothScrolling": true,
     "editor.lineNumbers": "relative",
     "editor.cursorSurroundingLines": 12,
-    "editor.minimap.autohide": true,
-    "editor.minimap.renderCharacters": false,
     "workbench.editor.wrapTabs": true,
     "workbench.layoutControl.enabled": false,
     "workbench.editor.pinnedTabSizing": "compact",
@@ -21,5 +19,6 @@
         "asvetliakov.vscode-neovim": 1
     },
     "vscode-neovim.useCtrlKeysForInsertMode": false,
+    "editor.minimap.enabled": false,
     "workbench.colorTheme": "Nord"
 }
