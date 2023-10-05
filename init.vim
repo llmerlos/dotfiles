@@ -25,7 +25,7 @@ if !g:ENV_IS_VSC && !g:ENV_IS_ITJ
     set scrolloff=8
     
     set mouse=a
-
+    
     set termguicolors
 endif
 
@@ -115,6 +115,24 @@ noremap    <leader>ti  :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)
 noremap    <leader>tc  :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze./[x]<space>/<CR> <bar> :nohls<CR>
 noremap    <leader>td  :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze.//<CR> <bar> :nohls<CR>
 
+"" Textmode
+function WordWrapModeON()
+    set wrap
+    set linebreak
+    noremap <Up>   gk
+    noremap <Down> gj
+endfunction
+
+function WordWrapModeOFF()
+    set nowrap
+    set nolinebreak
+    noremap <Up>   <Up>
+    noremap <Down> <Down>
+endfunction
+
+noremap <leader>wwe    <Cmd>call WordWrapModeON()<CR>
+noremap <leader>wwd    <Cmd>call WordWrapModeOFF()<CR>
+
 " Plugins
 " if g:ENV_IS_NVM " Should be LUA but not plugins in VSC for now
 if g:ENV_IS_LUA
@@ -160,10 +178,16 @@ lua << EOF
             {'<leader>fw', ':lua require"telescope".extensions.project.project{}<CR>', desc = 'TSCP Projects'},
         },
         config = function(_, opts)
+            local fb_actions = require "telescope".extensions.file_browser.actions 
             require('telescope').setup({
                 extensions = {
                     file_browser = {
-                        follow_symlinks = true
+                        follow_symlinks = true,
+                        mappings = {
+                            ["n"] = {
+                                ["%"] = fb_actions.create
+                            },
+                        }
                     }
                 }
             })
