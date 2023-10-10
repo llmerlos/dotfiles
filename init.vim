@@ -172,10 +172,10 @@ lua << EOF
             'nvim-tree/nvim-web-devicons'
         },
         keys = {
-            {'<leader>fp', '<cmd>Telescope find_files<cr>', desc = 'TSCP Find Files'},
-            {'<leader>fs', '<cmd>Telescope live_grep<cr>', desc = 'TSCP Live Grep'},
-            {'<leader>fe', '<cmd>Telescope file_browser<cr>', desc = 'TSCP File Browser'},
-            {'<leader>fw', ':lua require"telescope".extensions.project.project{}<CR>', desc = 'TSCP Projects'},
+            {'<C-p>', '<cmd>Telescope find_files<cr>', desc = 'TSCP Find Files'},
+            {'<leader>ps', '<cmd>Telescope live_grep<cr>', desc = 'TSCP Live Grep'},
+            {'<leader>pe', '<cmd>Telescope file_browser<cr>', desc = 'TSCP File Browser'},
+            {'<leader>pw', ':lua require"telescope".extensions.project.project{}<CR>', desc = 'TSCP Projects'},
         },
         config = function(_, opts)
             local fb_actions = require "telescope".extensions.file_browser.actions 
