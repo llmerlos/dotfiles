@@ -12,6 +12,8 @@ set nocompatible
 if !g:ENV_IS_VSC && !g:ENV_IS_ITJ
     syntax on
     filetype plugin indent on
+    set title
+
     set number
     set relativenumber
 
@@ -27,6 +29,31 @@ if !g:ENV_IS_VSC && !g:ENV_IS_ITJ
     set mouse=a
     
     set termguicolors
+    set splitright
+    set splitbelow
+
+"" STATUS LINE
+"" MODE / filename[+] / (git: branch/changes) uft8  flags HEX/ Ln: Cn: 
+    set laststatus=2
+    
+    set statusline=
+    set statusline+=MOD
+    set statusline+=\ \[%n]
+    set statusline+=\ %F\ %m
+
+    set statusline+=%=\ %l:%c
+
+" set statusline=
+" set statusline +=%1*\ %n\ %*            "buffer number
+" set statusline +=%5*%{&ff}%*            "file format
+" set statusline +=%3*%y%*                "file type
+" set statusline +=%4*\ %<%F%*            "full path
+" set statusline +=%2*%m%*                "modified flag
+" set statusline +=%1*%=%5l%*             "current line
+" set statusline +=%2*/%L%*               "total lines
+" set statusline +=%1*%4v\ %*             "virtual column number
+" set statusline +=%2*0x%04B\ %*          "character under cursor
+
 endif
 
 set noswapfile
@@ -37,17 +64,26 @@ set clipboard^=unnamedplus
 
 " REMAPS
 let mapleader=" "
+set wildcharm=<Tab>
+
+" SAD I KNOW
+noremap  <silent>   <C-S>   :w<CR>
 
 " BUFFER
+nnoremap <silent>   <leader><Tab> :b <Tab>
 nnoremap <silent>   <C-I>   :bp<CR>
 nnoremap <silent>   <C-O>   :bn<CR>
 nnoremap <silent>   <C-Q>   :bd<CR>
 
 " WINDOW
-nnoremap <silent>   <leader>wi   <C-W>h
-nnoremap <silent>   <leader>wo   <C-W>l
-nnoremap <silent>   <leader>wu   <C-W>k
-nnoremap <silent>   <leader>wd   <C-W>j
+noremap <silent>   <A-Left>    <C-W>h
+noremap <silent>   <A-Right>   <C-W>l
+noremap <silent>   <A-Up>      <C-W>k
+noremap <silent>   <A-Down>    <C-W>j
+noremap <silent>   <A-S-Left>  :vertical resize +3<CR>
+noremap <silent>   <A-S-Right> :vertical resize -3<CR>
+noremap <silent>   <A-S-Up>    :resize -3<CR>
+noremap <silent>   <A-S-Down>  :resize +3<CR>
 
 "" MISC
 nnoremap    Q           @
@@ -75,10 +111,10 @@ nnoremap    <Tab>       >>
 nnoremap    <s-Tab>     <lt><lt>
 
 "" MOVE LINES
-nnoremap    <M-Up>      :m .-2<CR>==
-nnoremap    <M-Down>    :m .+1<CR>==
-vnoremap    <M-Up>      :m '<-2<CR>gv
-vnoremap    <M-Down>    :m '>+1<CR>gv
+" nnoremap    <C-Up>      :m .-2<CR>==
+" nnoremap    <C-Down>    :m .+1<CR>==
+" vnoremap    <C-Up>      :m '<-2<CR>gv
+" vnoremap    <C-Down>    :m '>+1<CR>gv
 
 "" CLIPBOARD
 noremap     c           "_c
@@ -159,6 +195,19 @@ lua << EOF
         config = function()
             require("nord").setup({})
             vim.cmd.colorscheme("nord")
+        end,
+    }
+    pl_statusline = {
+        'nvim-lualine/lualine.nvim',
+        dependencies = {
+            'nvim-tree/nvim-web-devicons'
+        },
+        config = function()
+            require('lualine').setup {
+                options = {
+                    theme = 'nord'
+                }
+            }
         end,
     }
 
