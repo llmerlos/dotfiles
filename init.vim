@@ -33,26 +33,26 @@ if !g:ENV_IS_VSC && !g:ENV_IS_ITJ
     set splitbelow
 
 "" STATUS LINE
-"" MODE / filename[+] / (git: branch/changes) uft8  flags HEX/ Ln: Cn: 
-    set laststatus=2
+    function! Statusline_color_mode()
+        let l:color = get({'I': '#DiffAdd#', 'V': '#DiffChange#', "\<C-V>": '#DiffChange#', 
+        \ 'C': '#DiffDelete#', 'T': '#DiffText#', 'R': '#Search#'}, toupper(mode()), '1*')
+        return '%' . l:color . '%2{mode()} %0*'
+    endfunction
     
+    set noshowmode
+    set laststatus=2
     set statusline=
-    set statusline+=MOD
-    set statusline+=\ \[%n]
-    set statusline+=\ %F\ %m
+    set statusline+=%{%Statusline_color_mode()%}                "" current mode
+    set statusline+=\ [%n]                                      "" buffer num
+    set statusline+=\ %<%F\ %h%m%r                              "" full path fielname + tag
+    set statusline+=%=                                  "" align right after this
+    set statusline+=%{&fileencoding?&fileencoding:&encoding}    "" file encoding
+    set statusline+=\ %-(\ %l:%c%V\ %)                          "" line:column(visual column)
 
-    set statusline+=%=\ %l:%c
-
-" set statusline=
-" set statusline +=%1*\ %n\ %*            "buffer number
-" set statusline +=%5*%{&ff}%*            "file format
-" set statusline +=%3*%y%*                "file type
-" set statusline +=%4*\ %<%F%*            "full path
-" set statusline +=%2*%m%*                "modified flag
-" set statusline +=%1*%=%5l%*             "current line
-" set statusline +=%2*/%L%*               "total lines
-" set statusline +=%1*%4v\ %*             "virtual column number
-" set statusline +=%2*0x%04B\ %*          "character under cursor
+    augroup statusline
+        autocmd!
+        autocmd VimEnter,ColorScheme * exec 'hi User1 guifg=' .  synIDattr(hlID('statusline'),'bg'). ' guibg=' . synIDattr(hlID('statusline'),'fg')
+    augroup END
 
 endif
 
@@ -76,26 +76,27 @@ nnoremap <silent>   <C-O>   :bn<CR>
 nnoremap <silent>   <C-Q>   :bd<CR>
 
 " WINDOW
-noremap <silent>   <A-Left>    <C-W>h
-noremap <silent>   <A-Right>   <C-W>l
-noremap <silent>   <A-Up>      <C-W>k
-noremap <silent>   <A-Down>    <C-W>j
-noremap <silent>   <A-S-Left>  :vertical resize +3<CR>
-noremap <silent>   <A-S-Right> :vertical resize -3<CR>
-noremap <silent>   <A-S-Up>    :resize -3<CR>
-noremap <silent>   <A-S-Down>  :resize +3<CR>
+" noremap <silent>   <A-Left>    <C-W>h
+" noremap <silent>   <A-Right>   <C-W>l
+" noremap <silent>   <A-Up>      <C-W>k
+" noremap <silent>   <A-Down>    <C-W>j
+" noremap <silent>   <A-S-Left>  :vertical resize +3<CR>
+" noremap <silent>   <A-S-Right> :vertical resize -3<CR>
+" noremap <silent>   <A-S-Up>    :resize -3<CR>
+" noremap <silent>   <A-S-Down>  :resize +3<CR>
 
 "" MISC
 nnoremap    Q           @
 nnoremap    <leader>m   `
 nnoremap    U           <C-R>
+nnoremap    <silent> <leader>xc  :echo ''<CR>
+noremap     <silent> <leader>xs  :nohls<CR>
 
 "" SCROLL
 noremap     <C-d>       12jzz
 noremap     <C-u>       12kzz
 
 "" SEARCH
-noremap     <leader>sh  :nohls<CR>
 nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>/gc<Left><Left><Left>
 
 "" CONFLICTING KEYMAPS
@@ -111,10 +112,10 @@ nnoremap    <Tab>       >>
 nnoremap    <s-Tab>     <lt><lt>
 
 "" MOVE LINES
-" nnoremap    <C-Up>      :m .-2<CR>==
-" nnoremap    <C-Down>    :m .+1<CR>==
-" vnoremap    <C-Up>      :m '<-2<CR>gv
-" vnoremap    <C-Down>    :m '>+1<CR>gv
+nnoremap    <A-Up>      :m .-2<CR>==
+nnoremap    <A-Down>    :m .+1<CR>==
+vnoremap    <A-Up>      :m '<-2<CR>gv
+vnoremap    <A-Down>    :m '>+1<CR>gv
 
 "" CLIPBOARD
 noremap     c           "_c
@@ -195,19 +196,6 @@ lua << EOF
         config = function()
             require("nord").setup({})
             vim.cmd.colorscheme("nord")
-        end,
-    }
-    pl_statusline = {
-        'nvim-lualine/lualine.nvim',
-        dependencies = {
-            'nvim-tree/nvim-web-devicons'
-        },
-        config = function()
-            require('lualine').setup {
-                options = {
-                    theme = 'nord'
-                }
-            }
         end,
     }
 
@@ -337,7 +325,7 @@ if g:ENV_IS_NVM
 endif
 
 if g:ENV_IS_NVD
-    set guifont=JetBrainsMonoNLNFM-SemiBold:h13
+    set guifont=JetBrainsMonoNLNFM-SemiBold:h12
     let g:neovide_cursor_animation_length = 0.05
     let g:neovide_refresh_rate = 165
     let g:neovide_refresh_rate_idle = 5
