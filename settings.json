@@ -3,8 +3,7 @@
     "telemetry.telemetryLevel": "off",
     "update.mode": "start",
     "files.autoSave": "afterDelay",
-    "editor.fontFamily": "JetBrainsMonoNLNFM-SemiBold, FiraCode Nerd Font Mono, Arial",
-    "editor.fontSize": 12,
+    "editor.fontFamily": "JetBrainsMonoNL Nerd Font Mono, Arial",
     "settingsSync.ignoredSettings": [
         "editor.fontSize"
     ],
@@ -20,5 +19,8 @@
     },
     "vscode-neovim.useCtrlKeysForInsertMode": false,
     "editor.minimap.enabled": false,
-    "workbench.colorTheme": "Nord"
+    "workbench.colorTheme": "Nord",
+    "terminal.integrated.inheritEnv": false,
+    "editor.fontSize": 13,
+    "security.workspace.trust.emptyWindow": false
 }

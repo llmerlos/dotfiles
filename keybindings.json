@@ -91,35 +91,14 @@
         "when": "!terminalFocus" 
     },
     {
-        "key": "ctrl+pagedown",
-        "command": "-workbench.action.nextEditor"
-    },
-    {
         "key": "ctrl+i",
         "command": "workbench.action.previousEditor",
         "when": "!terminalFocus" 
     },
-    {
-        "key": "ctrl+pageup",
-        "command": "-workbench.action.previousEditor"
-    },
 // Misc
-    {
-        "key": "ctrl+shift+alt+i",
-        "command": "editor.action.inspectTMScopes"
-    },
     {
         "key": "ctrl+r",
         "command": "workbench.action.debug.run",
         "when": "debuggersAvailable && debugState != 'initializing'"
-    },
-    {
-        "key": "ctrl+f5",
-        "command": "-workbench.action.debug.run",
-        "when": "debuggersAvailable && debugState != 'initializing'"
-    },
-    {
-        "key": "ctrl+;",
-        "command": "workbench.action.closeActiveEditor"
     }
 ]
