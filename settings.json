@@ -4,6 +4,7 @@
     "update.mode": "start",
     "files.autoSave": "afterDelay",
     "editor.fontFamily": "JetBrainsMonoNL Nerd Font Mono, Arial",
+    "editor.fontSize": 13,
     "settingsSync.ignoredSettings": [
         "editor.fontSize"
     ],
@@ -21,6 +22,5 @@
     "editor.minimap.enabled": false,
     "workbench.colorTheme": "Nord",
     "terminal.integrated.inheritEnv": false,
-    "editor.fontSize": 13,
     "security.workspace.trust.emptyWindow": false
 }
