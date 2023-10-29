@@ -46,7 +46,8 @@ if !g:ENV_IS_VSC && !g:ENV_IS_ITJ
     set statusline+=\ [%n]                                      "" buffer num
     set statusline+=\ %<%F\ %h%m%r                              "" full path fielname + tag
     set statusline+=%=                                  "" align right after this
-    set statusline+=%{&fileencoding?&fileencoding:&encoding}    "" file encoding
+    set statusline+=%{&filetype}                              "" file type
+    set statusline+=\ %{&fileencoding?&fileencoding:&encoding}    "" file encoding
     set statusline+=\ %-(\ %l:%c%V\ %)                          "" line:column(visual column)
 
     augroup statusline
@@ -76,10 +77,6 @@ nnoremap <silent>   <C-O>   :bn<CR>
 nnoremap <silent>   <C-Q>   :bd<CR>
 
 " WINDOW
-" noremap <silent>   <A-Left>    <C-W>h
-" noremap <silent>   <A-Right>   <C-W>l
-" noremap <silent>   <A-Up>      <C-W>k
-" noremap <silent>   <A-Down>    <C-W>j
 " noremap <silent>   <A-S-Left>  :vertical resize +3<CR>
 " noremap <silent>   <A-S-Right> :vertical resize -3<CR>
 " noremap <silent>   <A-S-Up>    :resize -3<CR>
@@ -203,7 +200,7 @@ lua << EOF
 --------------------------------------------------------------------------------
     pl_telescope = {
         'nvim-telescope/telescope.nvim',
-        tag = '0.1.1',
+        tag = '0.1.4',
         dependencies = {
             'nvim-lua/plenary.nvim',
             'nvim-tree/nvim-web-devicons'
@@ -212,7 +209,7 @@ lua << EOF
             {'<C-p>', '<cmd>Telescope find_files<cr>', desc = 'TSCP Find Files'},
             {'<leader>ps', '<cmd>Telescope live_grep<cr>', desc = 'TSCP Live Grep'},
             {'<leader>pe', '<cmd>Telescope file_browser<cr>', desc = 'TSCP File Browser'},
-            {'<leader>pw', ':lua require"telescope".extensions.project.project{}<CR>', desc = 'TSCP Projects'},
+            {'<leader>pw', ':lua require"telescope".extensions.project.project{}<CR>',silent=true, desc = 'TSCP Projects'},
         },
         config = function(_, opts)
             local fb_actions = require "telescope".extensions.file_browser.actions 
@@ -295,14 +292,6 @@ lua << EOF
             require('mini.jump').setup(opts)
         end,
     }
-    
-    pl_surround = { 
-        'echasnovski/mini.surround', 
-        version = '*',
-        config = function(_, opts)
-            require('mini.surround').setup(opts)
-        end,
-    }
 
 EOF
 endif
@@ -317,11 +306,11 @@ if g:ENV_IS_VSC
     nnoremap    <leader>rs <Cmd>call VSCodeNotify('workbench.action.debug.run')<CR>
     nnoremap    <leader>rd <Cmd>call VSCodeNotify('workbench.action.debug.start')<CR>
     
-    lua require('lazy').setup({pl_align, pl_jump, pl_surround})
+    lua require('lazy').setup({pl_align, pl_jump})
 endif
 
 if g:ENV_IS_NVM
-    lua require('lazy').setup({pl_theme, pl_files, pl_project, pl_telescope, pl_tabline, pl_treesitter, pl_align, pl_comment, pl_jump, pl_surround})
+    lua require('lazy').setup({pl_theme, pl_files, pl_project, pl_telescope, pl_tabline, pl_treesitter, pl_align, pl_comment, pl_jump})
 endif
 
 if g:ENV_IS_NVD
