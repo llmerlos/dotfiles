@@ -77,10 +77,10 @@ nnoremap <silent>   <C-O>   :bn<CR>
 nnoremap <silent>   <C-Q>   :bd<CR>
 
 " WINDOW
-" noremap <silent>   <A-S-Left>  :vertical resize +3<CR>
-" noremap <silent>   <A-S-Right> :vertical resize -3<CR>
-" noremap <silent>   <A-S-Up>    :resize -3<CR>
-" noremap <silent>   <A-S-Down>  :resize +3<CR>
+noremap <silent>   <A-S-Left>  :vertical resize +3<CR>
+noremap <silent>   <A-S-Right> :vertical resize -3<CR>
+noremap <silent>   <A-S-Up>    :resize -3<CR>
+noremap <silent>   <A-S-Down>  :resize +3<CR>
 
 "" MISC
 nnoremap    Q           @
@@ -168,7 +168,6 @@ noremap <leader>wwe    <Cmd>call WordWrapModeON()<CR>
 noremap <leader>wwd    <Cmd>call WordWrapModeOFF()<CR>
 
 " Plugins
-" if g:ENV_IS_NVM " Should be LUA but not plugins in VSC for now
 if g:ENV_IS_LUA
 lua << EOF
     local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
@@ -311,11 +310,4 @@ endif
 
 if g:ENV_IS_NVM
     lua require('lazy').setup({pl_theme, pl_files, pl_project, pl_telescope, pl_tabline, pl_treesitter, pl_align, pl_comment, pl_jump})
-endif
-
-if g:ENV_IS_NVD
-    set guifont=JetBrainsMonoNLNFM-SemiBold:h12
-    let g:neovide_cursor_animation_length = 0.05
-    let g:neovide_refresh_rate = 165
-    let g:neovide_refresh_rate_idle = 5
 endif
