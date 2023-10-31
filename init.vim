@@ -70,24 +70,24 @@ set wildcharm=<Tab>
 " SAD I KNOW
 noremap  <silent>   <C-S>   :w<CR>
 
+"" BLOCK INDENT
+vnoremap    >           >gv
+vnoremap    <lt>        <lt>gv
+vnoremap    <Tab>       >gv
+vnoremap    <s-Tab>     <lt>gv
+
 " BUFFER
 nnoremap <silent>   <leader><Tab> :b <Tab>
 nnoremap <silent>   <C-I>   :bp<CR>
 nnoremap <silent>   <C-O>   :bn<CR>
 nnoremap <silent>   <C-Q>   :bd<CR>
 
-" WINDOW
-noremap <silent>   <A-S-Left>  :vertical resize +3<CR>
-noremap <silent>   <A-S-Right> :vertical resize -3<CR>
-noremap <silent>   <A-S-Up>    :resize -3<CR>
-noremap <silent>   <A-S-Down>  :resize +3<CR>
-
 "" MISC
-nnoremap    Q           @
 nnoremap    <leader>m   `
 nnoremap    U           <C-R>
 nnoremap    <silent> <leader>xc  :echo ''<CR>
 noremap     <silent> <leader>xs  :nohls<CR>
+noremap     <C-E>  :Ex<CR>
 
 "" SCROLL
 noremap     <C-d>       12jzz
@@ -99,14 +99,6 @@ nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>/gc<Left><Left><Left>
 "" CONFLICTING KEYMAPS
 nnoremap    <leader><leader>a   gg0vG$    
 nnoremap    <leader><leader>v   <C-v>
-
-"" BLOCK INDENT
-vnoremap    >           >gv
-vnoremap    <lt>        <lt>gv
-vnoremap    <Tab>       >gv
-vnoremap    <s-Tab>     <lt>gv
-nnoremap    <Tab>       >>
-nnoremap    <s-Tab>     <lt><lt>
 
 "" MOVE LINES
 nnoremap    <A-Up>      :m .-2<CR>==
@@ -206,47 +198,20 @@ lua << EOF
         },
         keys = {
             {'<C-p>', '<cmd>Telescope find_files<cr>', desc = 'TSCP Find Files'},
-            {'<leader>ps', '<cmd>Telescope live_grep<cr>', desc = 'TSCP Live Grep'},
-            {'<leader>pe', '<cmd>Telescope file_browser<cr>', desc = 'TSCP File Browser'},
-            {'<leader>pw', ':lua require"telescope".extensions.project.project{}<CR>',silent=true, desc = 'TSCP Projects'},
+            {'<C-f>', '<cmd>Telescope live_grep<cr>', desc = 'TSCP Live Grep'},
+            {'<leader>W', ':lua require"telescope".extensions.project.project{}<CR>',silent=true, desc = 'TSCP Projects'},
         },
         config = function(_, opts)
-            local fb_actions = require "telescope".extensions.file_browser.actions 
-            require('telescope').setup({
-                extensions = {
-                    file_browser = {
-                        follow_symlinks = true,
-                        mappings = {
-                            ["n"] = {
-                                ["%"] = fb_actions.create
-                            },
-                        }
-                    }
-                }
-            })
-            require("telescope").load_extension "file_browser"
+            require('telescope').setup({})
             require("telescope").load_extension "project"
         end,
     }
     
-    pl_files = {
-        'nvim-telescope/telescope-file-browser.nvim',
-        dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' }
-    }
-    
     pl_project = {
         'nvim-telescope/telescope-project.nvim',
-        dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-telescope/telescope-file-browser.nvim' }
+        dependencies = { 'nvim-telescope/telescope.nvim'}
     }
     
-    pl_tabline = { 
-        'echasnovski/mini.tabline', 
-        version = '*',
-        config = function(_, opts)
-            require('mini.tabline').setup(opts)
-        end,
-    }
-
     pl_treesitter = {
         'nvim-treesitter/nvim-treesitter',
         version = false,
@@ -296,18 +261,12 @@ EOF
 endif
 
 if g:ENV_IS_VSC
-    nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>
-    nnoremap    <leader>sw  <Cmd>call VSCodeNotify('actions.find', { 'searchString': expand('<cword>')})<CR>
-
     nnoremap    gc          <Plug>VSCodeCommentaryLine
     vnoremap    gc          <Plug>VSCodeCommentary
 
-    nnoremap    <leader>rs <Cmd>call VSCodeNotify('workbench.action.debug.run')<CR>
-    nnoremap    <leader>rd <Cmd>call VSCodeNotify('workbench.action.debug.start')<CR>
-    
     lua require('lazy').setup({pl_align, pl_jump})
 endif
 
 if g:ENV_IS_NVM
-    lua require('lazy').setup({pl_theme, pl_files, pl_project, pl_telescope, pl_tabline, pl_treesitter, pl_align, pl_comment, pl_jump})
+    lua require('lazy').setup({pl_theme, pl_project, pl_telescope, pl_treesitter, pl_align, pl_comment, pl_jump})
 endif
