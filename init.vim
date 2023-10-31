@@ -51,8 +51,8 @@ if !g:ENV_IS_VSC && !g:ENV_IS_ITJ
     set statusline+=\ [%n]                                      "" buffer num
     set statusline+=\ %<%F\ %h%m%r                              "" full path fielname + tag
     set statusline+=%=                                  "" align right after this
-    set statusline+=%{&filetype}                              "" file type
-    set statusline+=\ %{&fileencoding?&fileencoding:&encoding}    "" file encoding
+    set statusline+=%{&filetype}                                "" file type
+    set statusline+=\ %{&fileencoding?&fileencoding:&encoding}  "" file encoding
     set statusline+=\ %-(\ %l:%c%V\ %)                          "" line:column(visual column)
 
 endif
@@ -228,7 +228,21 @@ lua << EOF
         end,
     }
 
--- Text edit
+-- Git
+-------------------------------------------------------------------------------
+    pl_gitsigns = { 
+        'lewis6991/gitsigns.nvim', 
+        version = '*',
+        config = function(_, opts)
+            require('gitsigns').setup(opts)
+            vim.api.nvim_command('set statusline+=%#StatusLineR#')
+            vim.api.nvim_command("set statusline+=%{get(b:,'gitsigns_head','')!=''?'\\ ('.get(b:,'gitsigns_head','').')\\ ':''}")
+            vim.api.nvim_command("set statusline+=%{get(b:,'gitsigns_status','')!=''?'\\ '.get(b:,'gitsigns_status','').'\\ ':''}")
+            vim.api.nvim_command('set statusline+=%0*')
+        end,
+    }
+
+-- Text
 --------------------------------------------------------------------------------
     pl_align = { 
         'echasnovski/mini.align', 
@@ -268,5 +282,5 @@ if g:ENV_IS_VSC
 endif
 
 if g:ENV_IS_NVM
-    lua require('lazy').setup({pl_theme, pl_project, pl_telescope, pl_treesitter, pl_align, pl_comment, pl_jump})
+    lua require('lazy').setup({pl_theme, pl_project, pl_telescope, pl_treesitter, pl_gitsigns, pl_align, pl_comment, pl_jump})
 endif
