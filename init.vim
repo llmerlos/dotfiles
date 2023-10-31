@@ -35,10 +35,15 @@ if !g:ENV_IS_VSC && !g:ENV_IS_ITJ
 "" STATUS LINE
     function! Statusline_color_mode()
         let l:color = get({'I': '#DiffAdd#', 'V': '#DiffChange#', "\<C-V>": '#DiffChange#', 
-        \ 'C': '#DiffDelete#', 'T': '#DiffText#', 'R': '#Search#'}, toupper(mode()), '1*')
+        \ 'C': '#DiffDelete#', 'T': '#DiffText#', 'R': '#Search#'}, toupper(mode()), '#StatusLineR#')
         return '%' . l:color . '%2{mode()} %0*'
     endfunction
     
+    augroup statusline
+        autocmd!
+        autocmd VimEnter,ColorScheme * exec 'hi StatusLineR guifg=' .  synIDattr(hlID('statusline'),'bg'). ' guibg=' . synIDattr(hlID('statusline'),'fg')
+    augroup END
+
     set noshowmode
     set laststatus=2
     set statusline=
@@ -49,11 +54,6 @@ if !g:ENV_IS_VSC && !g:ENV_IS_ITJ
     set statusline+=%{&filetype}                              "" file type
     set statusline+=\ %{&fileencoding?&fileencoding:&encoding}    "" file encoding
     set statusline+=\ %-(\ %l:%c%V\ %)                          "" line:column(visual column)
-
-    augroup statusline
-        autocmd!
-        autocmd VimEnter,ColorScheme * exec 'hi User1 guifg=' .  synIDattr(hlID('statusline'),'bg'). ' guibg=' . synIDattr(hlID('statusline'),'fg')
-    augroup END
 
 endif
 
@@ -74,7 +74,8 @@ noremap  <silent>   <C-S>   :w<CR>
 vnoremap    >           >gv
 vnoremap    <lt>        <lt>gv
 vnoremap    <Tab>       >gv
-vnoremap    <s-Tab>     <lt>gv
+vnoremap    <S-Tab>     <lt>gv
+inoremap    <S-Tab>     <C-d>
 
 " BUFFER
 nnoremap <silent>   <leader><Tab> :b <Tab>
@@ -83,7 +84,6 @@ nnoremap <silent>   <C-O>   :bn<CR>
 nnoremap <silent>   <C-Q>   :bd<CR>
 
 "" MISC
-nnoremap    <leader>m   `
 nnoremap    U           <C-R>
 nnoremap    <silent> <leader>xc  :echo ''<CR>
 noremap     <silent> <leader>xs  :nohls<CR>
@@ -217,7 +217,7 @@ lua << EOF
         version = false,
         build = ':TSUpdate',
         opts = {
-            ensure_installed =  { 'lua', 'vim', 'vimdoc', 'c', 'python' },
+            ensure_installed =  { 'vim', 'vimdoc', 'c', 'python' },
             sync_install = false,
             auto_install = true,
             highlight = { enable = true },
