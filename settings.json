@@ -1,26 +1,31 @@
 {
     "settingsSync.keybindingsPerPlatform": false,
-    "telemetry.telemetryLevel": "off",
-    "update.mode": "start",
-    "files.autoSave": "afterDelay",
-    "editor.fontFamily": "JetBrainsMonoNL Nerd Font Mono, Arial",
-    "editor.fontSize": 13,
     "settingsSync.ignoredSettings": [
         "editor.fontSize"
     ],
+    "telemetry.telemetryLevel": "off",
+    "update.mode": "start",
+    "files.autoSave": "afterDelay",
+    "files.exclude": {
+        "**/*.ini": true
+    },
+    "editor.fontFamily": "JetBrainsMonoNL Nerd Font Mono, Arial",
+    "editor.fontSize": 12,
     "editor.cursorSmoothCaretAnimation": "on",
     "editor.smoothScrolling": true,
     "editor.lineNumbers": "relative",
     "editor.cursorSurroundingLines": 12,
+    "editor.minimap.enabled": false,
     "workbench.editor.wrapTabs": true,
-    "workbench.layoutControl.enabled": false,
+    "workbench.colorTheme": "Nord",
     "workbench.editor.pinnedTabSizing": "compact",
+    "terminal.integrated.inheritEnv": false,
+    // EXTENSIONS
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
     },
-    "vscode-neovim.useCtrlKeysForInsertMode": false,
-    "editor.minimap.enabled": false,
-    "workbench.colorTheme": "Nord",
-    "terminal.integrated.inheritEnv": false,
-    "security.workspace.trust.emptyWindow": false
+    "vscode-neovim.ctrlKeysForInsertMode": [],
+    "vscode-neovim.ctrlKeysForNormalMode": [
+        "a", "d", "e", "h", "i", "j", "l", "o", "t", "u", "v", "w", "x", "y", "z", "/" 
+    ]
 }

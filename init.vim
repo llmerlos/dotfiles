@@ -94,7 +94,7 @@ noremap     <C-d>       12jzz
 noremap     <C-u>       12kzz
 
 "" SEARCH
-nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>/gc<Left><Left><Left>
+nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>
 
 "" CONFLICTING KEYMAPS
 nnoremap    <leader><leader>a   gg0vG$    
@@ -275,8 +275,8 @@ EOF
 endif
 
 if g:ENV_IS_VSC
+    nunmap      gcc
     nnoremap    gc          <Plug>VSCodeCommentaryLine
-    vnoremap    gc          <Plug>VSCodeCommentary
 
     lua require('lazy').setup({pl_align, pl_jump})
 endif
