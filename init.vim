@@ -1,15 +1,17 @@
 " ENVIRONMENT DETECT
-let g:ENV_IS_LUA = has('nvim')
-let g:ENV_IS_VSC = exists('g:vscode')
-let g:ENV_IS_NVD = exists('g:neovide')
-let g:ENV_IS_NVM = g:ENV_IS_LUA && !g:ENV_IS_VSC 
-let g:ENV_IS_ITJ = has('ide')
-let g:ENV_IS_VIM = !g:ENV_IS_LUA && !g:ENV_IS_ITJ
+let g:env = {'lua' :  has('nvim')}
+let g:env.vsc = exists('g:vscode')
+let g:env.nvd = exists('g:neovide')
+let g:env.nvm = g:env.lua && !env.vsc 
+let g:env.itj = has('ide')
+let g:env.vim = !g:env.lua && !env.itj
 
 " OPTIONS
 set nocompatible
+set viminfo="NONE"
 
-if !g:ENV_IS_VSC && !g:ENV_IS_ITJ
+if !g:env.vsc && !g:env.itj
+    " colorscheme slate
     syntax on
     filetype plugin indent on
     set title
@@ -32,7 +34,7 @@ if !g:ENV_IS_VSC && !g:ENV_IS_ITJ
     set splitright
     set splitbelow
 
-"" STATUS LINE
+    "" STATUS LINE
     function! Statusline_color_mode()
         let l:color = get({'I': '#DiffAdd#', 'V': '#DiffChange#', "\<C-V>": '#DiffChange#', 
         \ 'C': '#DiffDelete#', 'T': '#DiffText#', 'R': '#Search#'}, toupper(mode()), '#StatusLineR#')
@@ -62,6 +64,7 @@ set incsearch
 set ignorecase
 set smartcase
 set clipboard^=unnamedplus
+" set foldmethod=indent
 
 " REMAPS
 let mapleader=" "
@@ -84,17 +87,14 @@ nnoremap <silent>   <C-O>   :bn<CR>
 nnoremap <silent>   <C-Q>   :bd<CR>
 
 "" MISC
-nnoremap    U           <C-R>
-nnoremap    <silent> <leader>xc  :echo ''<CR>
-noremap     <silent> <leader>xs  :nohls<CR>
-noremap     <C-E>  :Ex<CR>
+nnoremap    U               <C-R>
+noremap     <silent><CR>    :set nohls<CR>
+noremap     <leader>cd      :cd %:h<CR>
+noremap     <C-E>           :Ex<CR>
 
 "" SCROLL
 noremap     <C-d>       12jzz
 noremap     <C-u>       12kzz
-
-"" SEARCH
-nnoremap    <leader>sr  :%s/\<<C-r><C-w>\>/<C-r><C-w>
 
 "" CONFLICTING KEYMAPS
 nnoremap    <leader><leader>a   gg0vG$    
@@ -136,151 +136,85 @@ vnoremap    <leader>,   :'<'>norm A,<CR>
 vnoremap    <leader>.   :'<'>norm A.<CR>
 vnoremap    <leader>$   :'<'>norm $"_x<CR>
 
+" Config
+noremap <leader>vr  :source $MYVIMRC<CR>
+noremap <leader>ve  :e $MYVIMRC<CR>
+
+" SNIPS
 "" Checkbox ( https://marcelfischer.eu/blog/2019/checkbox-regex/ )
 noremap    <leader>ti  :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze./[<space>]<space>/<CR> <bar> :nohls<CR>
 noremap    <leader>tc  :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze./[x]<space>/<CR> <bar> :nohls<CR>
 noremap    <leader>td  :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze.//<CR> <bar> :nohls<CR>
 
+
 "" Textmode
-function WordWrapModeON()
-    set wrap
-    set linebreak
-    noremap <Up>   gk
-    noremap <Down> gj
+function! WordWrapMode(activate)
+    if a:activate
+        set wrap
+        set linebreak
+        noremap <Up>   gk
+        noremap <Down> gj
+    else
+        set nowrap
+        set nolinebreak
+        noremap <Up>   <Up>
+        noremap <Down> <Down>
+    endif
 endfunction
 
-function WordWrapModeOFF()
-    set nowrap
-    set nolinebreak
-    noremap <Up>   <Up>
-    noremap <Down> <Down>
+"" Boolean Toggle
+function! ToggleBoolean()
+    let line = getline(".")
+    let new_line = line
+
+    let toggle_table = [ ['True', 'False'] , ['true', 'false'], ['0', '1']]
+
+    for [a_value, b_value] in toggle_table
+        if stridx(line, b_value) != -1
+            let new_line = substitute(line, '\C' . b_value, a_value, '')
+            break
+        elseif stridx(line, a_value) != -1
+            let new_line = substitute(line, '\C' . a_value, b_value, '')
+            break
+        endif
+    endfor
+    
+    call setline(".", new_line)
+endfunction
+noremap - :call ToggleBoolean()<CR>
+
+" PLG 
+let g:data_dir = g:env.lua ? stdpath('data') . '/site' : '~/.vim'
+let plug_installed = ! empty(glob(data_dir . '/autoload/plug.vim'))
+
+function! PLGInstall()
+    execute '!curl -fLo '. g:data_dir . '/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 endfunction
 
-noremap <leader>wwe    <Cmd>call WordWrapModeON()<CR>
-noremap <leader>wwd    <Cmd>call WordWrapModeOFF()<CR>
+if plug_installed
+    call plug#begin()
+    function! Cond(cond, ...)
+        let opts = get(a:000, 0, {})
+        return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
+    endfunction
 
-" Plugins
-if g:ENV_IS_LUA
-lua << EOF
-    local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-    if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        'git',
-        'clone',
-        '--filter=blob:none',
-        'https://github.com/folke/lazy.nvim.git',
-        '--branch=stable', -- latest stable release
-        lazypath,
-    })
-    end
-    vim.opt.rtp:prepend(lazypath)
-
--- GUI
---------------------------------------------------------------------------------
-    pl_theme = {
-        'gbprod/nord.nvim',
-        lazy=false,
-        priority=1000,
-        config = function()
-            require("nord").setup({})
-            vim.cmd.colorscheme("nord")
-        end,
-    }
-
--- IDE-like
---------------------------------------------------------------------------------
-    pl_telescope = {
-        'nvim-telescope/telescope.nvim',
-        tag = '0.1.4',
-        dependencies = {
-            'nvim-lua/plenary.nvim',
-            'nvim-tree/nvim-web-devicons'
-        },
-        keys = {
-            {'<C-p>', '<cmd>Telescope find_files<cr>', desc = 'TSCP Find Files'},
-            {'<C-f>', '<cmd>Telescope live_grep<cr>', desc = 'TSCP Live Grep'},
-            {'<leader>W', ':lua require"telescope".extensions.project.project{}<CR>',silent=true, desc = 'TSCP Projects'},
-        },
-        config = function(_, opts)
-            require('telescope').setup({})
-            require("telescope").load_extension "project"
-        end,
-    }
+    " Align gaip
+    Plug 'junegunn/vim-easy-align'
     
-    pl_project = {
-        'nvim-telescope/telescope-project.nvim',
-        dependencies = { 'nvim-telescope/telescope.nvim'}
-    }
-    
-    pl_treesitter = {
-        'nvim-treesitter/nvim-treesitter',
-        version = false,
-        build = ':TSUpdate',
-        opts = {
-            ensure_installed =  { 'vim', 'vimdoc', 'c', 'python' },
-            sync_install = false,
-            auto_install = true,
-            highlight = { enable = true },
-            indent = { enable = true },
-        },
-        config = function(_, opts)
-            require('nvim-treesitter.configs').setup(opts)
-        end,
-    }
+    " Multiline/Repeat fFtT
+    Plug 'rhysd/clever-f.vim'
 
--- Git
--------------------------------------------------------------------------------
-    pl_gitsigns = { 
-        'lewis6991/gitsigns.nvim', 
-        version = '*',
-        config = function(_, opts)
-            require('gitsigns').setup(opts)
-            vim.api.nvim_command('set statusline+=%#StatusLineR#')
-            vim.api.nvim_command("set statusline+=%{get(b:,'gitsigns_head','')!=''?'\\ ('.get(b:,'gitsigns_head','').')\\ ':''}")
-            vim.api.nvim_command("set statusline+=%{get(b:,'gitsigns_status','')!=''?'\\ '.get(b:,'gitsigns_status','').'\\ ':''}")
-            vim.api.nvim_command('set statusline+=%0*')
-        end,
-    }
+    " Surround : cs'", ysiw], ds
+    Plug 'tpope/vim-surround'
 
--- Text
---------------------------------------------------------------------------------
-    pl_align = { 
-        'echasnovski/mini.align', 
-        version = '*',
-        config = function(_, opts)
-            require('mini.align').setup(opts)
-        end,
-    }
+    " aCommentary: gcc, gc 
+    Plug 'tpope/vim-commentary', Cond(!g:env.vsc)
 
-    pl_comment = { 
-        'echasnovski/mini.comment', 
-        version = '*',
-        config = function(_, opts)
-            opts.mappings = {
-                comment_line = 'gc'
-            }
-            require('mini.comment').setup(opts)
-        end,
-    }
-    
-    pl_jump = { 
-        'echasnovski/mini.jump', 
-        version = '*',
-        config = function(_, opts)
-            require('mini.jump').setup(opts)
-        end,
-    }
+    " Fuzzy Picker (only neovim)
+    Plug 'nvim-lua/plenary.nvim', Cond(g:env.nvm)
+    Plug 'nvim-telescope/telescope.nvim', Cond(g:env.nvm, { 'tag': '0.1.6' })
+    nnoremap <C-p> <cmd>Telescope find_files<CR>
+    nnoremap <C-f> <cmd>Telescope live_grep<CR>
 
-EOF
-endif
-
-if g:ENV_IS_VSC
-    nunmap      gcc
-    nnoremap    gc          <Plug>VSCodeCommentaryLine
-
-    lua require('lazy').setup({pl_align, pl_jump})
-endif
-
-if g:ENV_IS_NVM
-    lua require('lazy').setup({pl_theme, pl_project, pl_telescope, pl_treesitter, pl_gitsigns, pl_align, pl_comment, pl_jump})
+    call plug#end()
 endif
