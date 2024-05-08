@@ -11,7 +11,7 @@ set nocompatible
 set viminfo="NONE"
 
 if !g:env.vsc && !g:env.itj
-    " colorscheme slate
+    colorscheme slate
     syntax on
     filetype plugin indent on
     set title
@@ -192,9 +192,10 @@ endfunction
 let g:data_dir = g:env.lua ? stdpath('data') . '/site' : '~/.vim'
 let plug_installed = ! empty(glob(data_dir . '/autoload/plug.vim'))
 
-function! PLGInstall()
+function! PLGSetup()
     execute '!curl -fLo '. g:data_dir . '/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 endfunction
+:command PlugSetup call PLGSetup()<CR>
 
 if plug_installed
     call plug#begin()
