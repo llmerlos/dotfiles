@@ -5,21 +5,31 @@
     ],
     "telemetry.telemetryLevel": "off",
     "update.mode": "start",
-    "files.autoSave": "afterDelay",
+    "files.autoSave": "onFocusChange",
     "files.exclude": {
         "**/*.ini": true
     },
-    "editor.fontFamily": "JetBrainsMonoNL Nerd Font Mono, Arial",
-    "editor.fontSize": 12,
+    "files.associations": {
+        "*.veo": "verilog"
+    },
+    "editor.fontFamily": "JetBrains Mono NL, Arial",
+    "editor.fontSize": 13,
     "editor.cursorSmoothCaretAnimation": "on",
     "editor.smoothScrolling": true,
     "editor.lineNumbers": "relative",
     "editor.cursorSurroundingLines": 12,
     "editor.minimap.enabled": false,
     "workbench.editor.wrapTabs": true,
-    "workbench.colorTheme": "Nord",
     "workbench.editor.pinnedTabSizing": "compact",
+    "workbench.list.smoothScrolling": true,
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.sideBar.location": "right",
+    "terminal.integrated.smoothScrolling": true,
     "terminal.integrated.inheritEnv": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "security.workspace.trust.enabled": false,
+    "window.commandCenter": false,
+    
     // EXTENSIONS
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
@@ -27,5 +37,8 @@
     "vscode-neovim.ctrlKeysForInsertMode": [],
     "vscode-neovim.ctrlKeysForNormalMode": [
         "a", "d", "e", "h", "i", "j", "l", "o", "t", "u", "v", "w", "x", "y", "z", "/" 
-    ]
+    ],
+
+    // Useful toogles
+    // "editor.rulers": [4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64],
 }

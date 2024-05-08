@@ -64,87 +64,93 @@ set incsearch
 set ignorecase
 set smartcase
 set clipboard^=unnamedplus
-" set foldmethod=indent
+set gp=rg\ -n
 
 " REMAPS
 let mapleader=" "
 set wildcharm=<Tab>
 
+" CONFIG
+noremap    <leader>vr         :source $MYVIMRC<CR>
+noremap    <leader>ve         :e $MYVIMRC<CR>
+
 " SAD I KNOW
-noremap  <silent>   <C-S>   :w<CR>
+noremap  <silent>             <C-S>   :w<CR>
 
 "" BLOCK INDENT
-vnoremap    >           >gv
-vnoremap    <lt>        <lt>gv
-vnoremap    <Tab>       >gv
-vnoremap    <S-Tab>     <lt>gv
-inoremap    <S-Tab>     <C-d>
+vnoremap    >                 >gv
+vnoremap    <lt>              <lt>gv
+vnoremap    <Tab>             >gv
+vnoremap    <S-Tab>           <lt>gv
+inoremap    <S-Tab>           <C-d>
 
 " BUFFER
-nnoremap <silent>   <leader><Tab> :b <Tab>
-nnoremap <silent>   <C-I>   :bp<CR>
-nnoremap <silent>   <C-O>   :bn<CR>
-nnoremap <silent>   <C-Q>   :bd<CR>
+nnoremap <silent>             <leader><Tab> :b <Tab>
+nnoremap <silent>             <C-I>   :bp<CR>
+nnoremap <silent>             <C-O>   :bn<CR>
+nnoremap <silent>             <C-Q>   :bd<CR>
 
 "" MISC
-nnoremap    U               <C-R>
-noremap     <silent><CR>    :set nohls<CR>
-noremap     <leader>cd      :cd %:h<CR>
-noremap     <C-E>           :Ex<CR>
+nnoremap    U                 <C-R>
+noremap     <leader>hl        :set nohls<CR>
+noremap     <leader>cd        :cd %:h<CR>
+noremap     <C-E>             :Ex<CR>
+noremap     -                 :call ToggleBoolean()<CR>
 
 "" SCROLL
-noremap     <C-d>       12jzz
-noremap     <C-u>       12kzz
+noremap     <C-d>             12j
+noremap     <C-u>             12k
 
 "" CONFLICTING KEYMAPS
-nnoremap    <leader><leader>a   gg0vG$    
-nnoremap    <leader><leader>v   <C-v>
+nnoremap    <leader><leader>a gg0vG$
+nnoremap    <leader><leader>v <C-v>
 
 "" MOVE LINES
-nnoremap    <A-Up>      :m .-2<CR>==
-nnoremap    <A-Down>    :m .+1<CR>==
-vnoremap    <A-Up>      :m '<-2<CR>gv
-vnoremap    <A-Down>    :m '>+1<CR>gv
+nnoremap    <A-Up>            :m .-2<CR>==
+nnoremap    <A-Down>          :m .+1<CR>==
+vnoremap    <A-Up>            :m '<-2<CR>gv
+vnoremap    <A-Down>          :m '>+1<CR>gv
 
 "" CLIPBOARD
-noremap     c           "_c
-nnoremap    cc          "_S
-noremap     C           "_C
-noremap     s           "_s
-noremap     S           "_S
-noremap     d           "_d
-nnoremap    dd          "_dd
-noremap     D           "_D
-noremap     x           "_x
-noremap     X           "_X
-
-noremap     <leader>c   c
-nnoremap    <leader>cc  cc
-noremap     <leader>C   C
-noremap     <leader>d   d
-nnoremap    <leader>dd  dd
-noremap     <leader>D   D
-vnoremap    p           "_dP
+noremap     c                 "_c
+nnoremap    cc                "_S
+noremap     C                 "_C
+noremap     s                 "_s
+noremap     S                 "_S
+noremap     d                 "_d
+nnoremap    dd                "_dd
+noremap     D                 "_D
+noremap     x                 "_x
+noremap     X                 "_X
+noremap     <leader>c         c
+nnoremap    <leader>cc        cc
+noremap     <leader>C         C
+noremap     <leader>d         d
+nnoremap    <leader>dd        dd
+noremap     <leader>D         D
+vnoremap    p                 "_dP
 
 "" APPEND ,;. TO END OF LINE
-nnoremap    <leader>;   mrA;<ESC>`r
-nnoremap    <leader>,   mrA,<ESC>`r
-nnoremap    <leader>.   mrA.<ESC>`r
-nnoremap    <leader>$   mr$"_x`r
-vnoremap    <leader>;   :'<'>norm A;<CR>
-vnoremap    <leader>,   :'<'>norm A,<CR>
-vnoremap    <leader>.   :'<'>norm A.<CR>
-vnoremap    <leader>$   :'<'>norm $"_x<CR>
-
-" Config
-noremap <leader>vr  :source $MYVIMRC<CR>
-noremap <leader>ve  :e $MYVIMRC<CR>
+nnoremap    <leader>;         mrA;<ESC>`r
+nnoremap    <leader>,         mrA,<ESC>`r
+nnoremap    <leader>.         mrA.<ESC>`r
+nnoremap    <leader>$         mr$"_x`r
+vnoremap    <leader>;         :'<'>norm A;<CR>
+vnoremap    <leader>,         :'<'>norm A,<CR>
+vnoremap    <leader>.         :'<'>norm A.<CR>
+vnoremap    <leader>$         :'<'>norm $"_x<CR>
 
 " SNIPS
 "" Checkbox ( https://marcelfischer.eu/blog/2019/checkbox-regex/ )
-noremap    <leader>ti  :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze./[<space>]<space>/<CR> <bar> :nohls<CR>
-noremap    <leader>tc  :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze./[x]<space>/<CR> <bar> :nohls<CR>
-noremap    <leader>td  :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze.//<CR> <bar> :nohls<CR>
+noremap    <leader>ti         :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze./[<space>]<space>/<CR> <bar> :nohls<CR>
+noremap    <leader>tc         :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze./[x]<space>/<CR> <bar> :nohls<CR>
+noremap    <leader>td         :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze.//<CR> <bar> :nohls<CR>
+
+" VSCODE BINDINGS
+if g:env.vsc
+   noremap <leader>bl         <Cmd>lua require('vscode-neovim').update_config({"editor.rulers"}, {{4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64}}, "global")<CR>
+   noremap <leader>bh         <Cmd>lua require('vscode-neovim').update_config({"editor.rulers"}, {{}}, "global")<CR>
+endif
 
 
 "" Textmode
@@ -181,7 +187,6 @@ function! ToggleBoolean()
     
     call setline(".", new_line)
 endfunction
-noremap - :call ToggleBoolean()<CR>
 
 " PLG 
 let g:data_dir = g:env.lua ? stdpath('data') . '/site' : '~/.vim'
@@ -198,23 +203,23 @@ if plug_installed
         return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
     endfunction
 
-    " Align gaip
+    " Align: gaip
     Plug 'junegunn/vim-easy-align'
-    
-    " Multiline/Repeat fFtT
-    Plug 'rhysd/clever-f.vim'
+    xnoremap ga <Plug>(EasyAlign)
+    nnoremap ga <Plug>(EasyAlign)
 
-    " Surround : cs'", ysiw], ds
+    " Surround: cs'", ysiw], ds
     Plug 'tpope/vim-surround'
 
-    " aCommentary: gcc, gc 
+    " Commentary: gcc, gc 
     Plug 'tpope/vim-commentary', Cond(!g:env.vsc)
 
-    " Fuzzy Picker (only neovim)
-    Plug 'nvim-lua/plenary.nvim', Cond(g:env.nvm)
-    Plug 'nvim-telescope/telescope.nvim', Cond(g:env.nvm, { 'tag': '0.1.6' })
-    nnoremap <C-p> <cmd>Telescope find_files<CR>
-    nnoremap <C-f> <cmd>Telescope live_grep<CR>
+    " FZF: requires ripgrep
+    Plug 'junegunn/fzf', Cond(!g:env.vsc, { 'do': { -> fzf#install() } } )
+    Plug 'junegunn/fzf.vim', Cond(!g:env.vsc)
+    let g:fzf_layout = { 'down': '50%' }
+    nnoremap <C-p> :Files<CR>
+    nnoremap <C-f> :Rg<CR>
 
     call plug#end()
 endif
