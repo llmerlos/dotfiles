@@ -1,8 +1,7 @@
-New-Alias vim nvim
-New-Alias v nvim
+# To reload: & $profile
 New-Alias ll Get-ChildItem
-
-function cdc { set-location "C:\" }
+New-Alias v nvim
+New-Alias vg nvim-qt
 
 Import-Module PSFzf
 Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
