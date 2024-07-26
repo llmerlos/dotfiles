@@ -5,12 +5,13 @@ let g:env.nvd = exists('g:neovide')
 let g:env.nvm = g:env.lua && !env.vsc 
 let g:env.itj = has('ide')
 let g:env.vim = !g:env.lua && !env.itj
+let g:env.emb = g:env.vsc || g:env.itj
 
 " OPTIONS
 set nocompatible
 set viminfo="NONE"
 
-if !g:env.vsc && !g:env.itj
+if !g:env.emb 
     syntax on
     filetype plugin indent on
     set title
@@ -32,31 +33,6 @@ if !g:env.vsc && !g:env.itj
     set splitright
     set splitbelow
 
-    let g:netrw_banner=0
-
-    "" STATUS LINE
-    function! Statusline_color_mode()
-        let l:color = get({'I': '#DiffAdd#', 'V': '#DiffChange#', "\<C-V>": '#DiffChange#', 
-        \ 'C': '#DiffDelete#', 'T': '#DiffText#', 'R': '#Search#'}, toupper(mode()), '#StatusLineR#')
-        return '%' . l:color . '%2{mode()} %0*'
-    endfunction
-    
-    augroup statusline
-        autocmd!
-        autocmd VimEnter,ColorScheme * exec 'hi StatusLineR guifg=' .  synIDattr(hlID('statusline'),'bg'). ' guibg=' . synIDattr(hlID('statusline'),'fg')
-    augroup END
-
-    set noshowmode
-    set laststatus=2
-    set statusline=
-    set statusline+=%{%Statusline_color_mode()%}                "" current mode
-    set statusline+=\ [%n]                                      "" buffer num
-    set statusline+=\ %<%F\ %h%m%r                              "" full path fielname + tag
-    set statusline+=%=                                  "" align right after this
-    set statusline+=%{&filetype}                                "" file type
-    set statusline+=\ %{&fileencoding?&fileencoding:&encoding}  "" file encoding
-    set statusline+=\ %-(\ %l:%c%V\ %)                          "" line:column(visual column)
-
 endif
 
 set noswapfile
@@ -75,6 +51,10 @@ set wildcharm=<Tab>
 " CONFIG
 noremap    <leader>vr         :source $MYVIMRC<CR>
 noremap    <leader>ve         :e $MYVIMRC<CR>
+if g:env.vsc
+    noremap <leader>vr <Cmd>lua require('vscode-neovim').action("workbench.action.restartExtensionHost")<CR>
+    noremap <leader>ve :Edit $MYVIMRC<CR>
+endif
 
 " SEARCH (Replaced by plugins)
 noremap    <C-p>              :find *
@@ -86,9 +66,6 @@ noremap  <silent>             <C-S>   :w<CR>
 "" BLOCK INDENT
 vnoremap    >                 >gv
 vnoremap    <lt>              <lt>gv
-vnoremap    <Tab>             >gv
-vnoremap    <S-Tab>           <lt>gv
-inoremap    <S-Tab>           <C-d>
 
 " BUFFER
 nnoremap <silent><leader><Tab> :b <Tab>
@@ -131,24 +108,6 @@ nnoremap    <leader>dd        dd
 noremap     <leader>D         D
 vnoremap    p                 "_dP
 
-"" APPEND ,;. TO END OF LINE
-nnoremap    <leader>;         mrA;<ESC>`r
-nnoremap    <leader>,         mrA,<ESC>`r
-nnoremap    <leader>.         mrA.<ESC>`r
-nnoremap    <leader>$         mr$"_x`r
-vnoremap    <leader>;         :'<'>norm A;<CR>
-vnoremap    <leader>,         :'<'>norm A,<CR>
-vnoremap    <leader>.         :'<'>norm A.<CR>
-vnoremap    <leader>$         :'<'>norm $"_x<CR>
-
-"" VSCODE BINDINGS
-if g:env.vsc
-    noremap <leader>bl <Cmd>lua require('vscode-neovim').update_config({"editor.rulers"}, {{4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64}}, "global")<CR>
-    noremap <leader>bh <Cmd>lua require('vscode-neovim').update_config({"editor.rulers"}, {{}}, "global")<CR>
-    noremap <leader>vr <Cmd>lua require('vscode-neovim').action("workbench.action.restartExtensionHost")<CR>
-    noremap <leader>ve :Edit $MYVIMRC<CR>
-endif
-
 " SNIPS
 "" Checkbox ( https://marcelfischer.eu/blog/2019/checkbox-regex/ )
 noremap    <leader>ti    :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze./[<space>]<space>/<CR> <bar> :nohls<CR>
@@ -164,32 +123,16 @@ function! ToggleBoolean()
     let toggle_table = [ ['True', 'False'] , ['true', 'false'], ['0', '1']]
 
     for [a_value, b_value] in toggle_table
-        if stridx(line, b_value) != -1
-            let new_line = substitute(line, '\C' . b_value, a_value, '')
-            break
-        elseif stridx(line, a_value) != -1
+        if stridx(line, a_value) != -1
             let new_line = substitute(line, '\C' . a_value, b_value, '')
+            break
+        elseif stridx(line, b_value) != -1
+            let new_line = substitute(line, '\C' . b_value, a_value, '')
             break
         endif
     endfor
     
     call setline(".", new_line)
-endfunction
-
-"" Textmode
-noremap    <leader>ww    :call WordWrapMode()<left>
-function! WordWrapMode(activate)
-    if a:activate
-        set wrap
-        set linebreak
-        noremap <Up>   gk
-        noremap <Down> gj
-    else
-        set nowrap
-        set nolinebreak
-        noremap <Up>   <Up>
-        noremap <Down> <Down>
-    endif
 endfunction
 
 " PLG 
@@ -217,16 +160,23 @@ if plug_installed
     Plug 'tpope/vim-surround'
 
     "" Commentary: gcc, gc 
-    Plug 'tpope/vim-commentary', Cond(!g:env.vsc)
+"    Plug 'tpope/vim-commentary', Cond(!g:env.vsc)
 
     "" Telescope: Fuzzy Finding only on Neovim
     Plug 'nvim-lua/plenary.nvim', Cond(g:env.nvm)
-    Plug 'nvim-telescope/telescope.nvim', Cond(g:env.nvm, { 'tag': '0.1.6' })
+    Plug 'nvim-telescope/telescope.nvim', Cond(g:env.nvm, { 'tag': '0.1.8' })
     if g:env.nvm
         nnoremap <C-p> :Telescope find_files<CR>
         nnoremap <C-f> :Telescope live_grep<CR>
-        nnoremap <leader><C-p> :Telescope builtin<CR>
     endif
 
+    Plug 'lifepillar/vim-solarized8', Cond(!g:env.emb)
+    
     call plug#end()
 endif
+
+if !g:env.emb
+    set background=light
+    colorscheme solarized8
+endif
+
