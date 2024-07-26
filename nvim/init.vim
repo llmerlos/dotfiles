@@ -10,6 +10,13 @@ let g:env.emb = g:env.vsc || g:env.itj
 " OPTIONS
 set nocompatible
 set viminfo="NONE"
+set noswapfile
+set incsearch
+set ignorecase
+set smartcase
+set clipboard^=unnamedplus
+set path+=**
+set gp=rg\ -n
 
 if !g:env.emb 
     syntax on
@@ -17,96 +24,82 @@ if !g:env.emb
     set title
     set mouse=a
     set termguicolors
-
     set number
     set relativenumber
-
     set smartindent
     set tabstop=4
     set shiftwidth=4
     set softtabstop=4
     set expandtab
-    
     set nowrap
     set scrolloff=8
-    
     set splitright
     set splitbelow
-
 endif
-
-set noswapfile
-set incsearch
-set ignorecase
-set smartcase
-set clipboard^=unnamedplus
-
-set path+=**
-set gp=rg\ -n
 
 " REMAPS
 let mapleader=" "
 set wildcharm=<Tab>
 
 " CONFIG
-noremap    <leader>vr         :source $MYVIMRC<CR>
-noremap    <leader>ve         :e $MYVIMRC<CR>
+noremap     <leader>vr         :source $MYVIMRC<CR>
+noremap     <leader>ve         :e $MYVIMRC<CR>
 if g:env.vsc
-    noremap <leader>vr <Cmd>lua require('vscode-neovim').action("workbench.action.restartExtensionHost")<CR>
-    noremap <leader>ve :Edit $MYVIMRC<CR>
+    noremap <leader>vr         <Cmd>lua require('vscode-neovim').action("workbench.action.restartExtensionHost")<CR>
+    noremap <leader>ve         :Edit $MYVIMRC<CR>
 endif
 
 " SEARCH (Replaced by plugins)
-noremap    <C-p>              :find *
-noremap    <C-f>              :grep<space>
-
-" SAD I KNOW
-noremap  <silent>             <C-S>   :w<CR>
+noremap    <C-p>               :find *
+noremap    <C-f>               :grep<space>
 
 "" BLOCK INDENT
-vnoremap    >                 >gv
-vnoremap    <lt>              <lt>gv
+vnoremap    >                  >gv
+vnoremap    <lt>               <lt>gv
 
 " BUFFER
 nnoremap <silent><leader><Tab> :b <Tab>
 
 "" MISC
-nnoremap    U                 <C-R>
-noremap     <leader>h         :set nohls<CR>
-noremap     <leader>cd        :cd %:h<CR>
+nnoremap    U                  <C-R>
+noremap     <leader>h          :set nohls<CR>
+noremap     <leader>cd         :cd %:h<CR>
 
-"" SCROLL
-noremap     <C-d>             12j
-noremap     <C-u>             12k
+"" SCROLL & NAVIGATION
+noremap     <silent><C-d>      12j
+noremap     <silent><C-u>      12k
+noremap     <silent><C-l>      :bn<CR>
+noremap     <silent><C-h>      :bp<CR>
 
 "" CONFLICTING KEYMAPS
-nnoremap    <leader><leader>a gg0vG$
-nnoremap    <leader><leader>v <C-v>
+noremap     <C-s>              :w<CR>
+nnoremap    <leader><leader>a  gg0vG$
+nnoremap    <leader><leader>v  <C-v>
 
 "" MOVE LINES
-nnoremap    <A-Up>            :m .-2<CR>==
-nnoremap    <A-Down>          :m .+1<CR>==
-vnoremap    <A-Up>            :m '<-2<CR>gv
-vnoremap    <A-Down>          :m '>+1<CR>gv
+nnoremap    <silent><A-Up>     :m .-2<CR>==
+nnoremap    <silent><A-Down>   :m .+1<CR>==
+vnoremap    <silent><A-Up>     :m '<-2<CR>gv
+vnoremap    <silent><A-Down>   :m '>+1<CR>gv
 
 "" CLIPBOARD
-noremap     c                 "_c
-nnoremap    cc                "_S
-noremap     C                 "_C
-noremap     s                 "_s
-noremap     S                 "_S
-noremap     d                 "_d
-nnoremap    dd                "_dd
-noremap     D                 "_D
-noremap     x                 "_x
-noremap     X                 "_X
-noremap     <leader>c         c
-nnoremap    <leader>cc        cc
-noremap     <leader>C         C
-noremap     <leader>d         d
-nnoremap    <leader>dd        dd
-noremap     <leader>D         D
-vnoremap    p                 "_dP
+noremap     c                  "_c
+nnoremap    cc                 "_S
+noremap     C                  "_C
+noremap     s                  "_s
+noremap     S                  "_S
+noremap     d                  "_d
+nnoremap    dd                 "_dd
+noremap     D                  "_D
+noremap     x                  "_x
+noremap     X                  "_X
+noremap     <leader>c          c
+nnoremap    <leader>cc         cc
+noremap     <leader>C          C
+noremap     <leader>d          d
+nnoremap    <leader>dd         dd
+noremap     <leader>D          D
+vnoremap    p                  "_dP
 
 " SNIPS
 "" Checkbox ( https://marcelfischer.eu/blog/2019/checkbox-regex/ )
@@ -115,7 +108,7 @@ noremap    <leader>tc    :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>
 noremap    <leader>td    :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze.//<CR> <bar> :nohls<CR>
 
 "" Boolean Toggle
-noremap    -             :call ToggleBoolean()<CR>
+noremap     -                  :call ToggleBoolean()<CR>
 function! ToggleBoolean()
     let line = getline(".")
     let new_line = line
@@ -159,7 +152,7 @@ if plug_installed
     "" Surround: cs'", ysiw], ds
     Plug 'tpope/vim-surround'
 
-    "" Commentary: gcc, gc 
+    "" Commentary: gcc, gc // NOTE: Now in core vim and neovim
 "    Plug 'tpope/vim-commentary', Cond(!g:env.vsc)
 
     "" Telescope: Fuzzy Finding only on Neovim
