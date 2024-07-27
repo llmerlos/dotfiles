@@ -1,9 +1,8 @@
 " ENVIRONMENT DETECT
 let g:env = {'lua' :  has('nvim')}
 let g:env.vsc = exists('g:vscode')
-let g:env.nvd = exists('g:neovide')
-let g:env.nvm = g:env.lua && !env.vsc 
 let g:env.itj = has('ide')
+let g:env.nvm = g:env.lua && !env.vsc 
 let g:env.vim = !g:env.lua && !env.itj
 let g:env.emb = g:env.vsc || g:env.itj
 
@@ -17,6 +16,14 @@ set smartcase
 set clipboard^=unnamedplus
 set path+=**
 set gp=rg\ -n
+set smartindent
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+set scrolloff=8
+set splitright
+set splitbelow
 
 if !g:env.emb 
     syntax on
@@ -26,16 +33,7 @@ if !g:env.emb
     set termguicolors
     set number
     set relativenumber
-    set smartindent
-    set tabstop=4
-    set shiftwidth=4
-    set softtabstop=4
-    set expandtab
     set nowrap
-    set scrolloff=8
-    set splitright
-    set splitbelow
-
     color slate
 endif
 
@@ -59,9 +57,6 @@ noremap    <C-f>               :grep<space>
 vnoremap    >                  >gv
 vnoremap    <lt>               <lt>gv
 
-" BUFFER
-nnoremap <silent><leader><Tab> :b <Tab>
-
 "" MISC
 nnoremap    U                  <C-R>
 noremap     <leader>h          :set nohls<CR>
@@ -72,6 +67,7 @@ noremap     <silent><C-d>      12j
 noremap     <silent><C-u>      12k
 noremap     <silent><C-l>      :bn<CR>
 noremap     <silent><C-h>      :bp<CR>
+noremap  <silent><leader><Tab> :b <Tab>
 
 "" CONFLICTING KEYMAPS
 noremap     <C-s>              :w<CR>
@@ -130,7 +126,7 @@ function! ToggleBoolean()
     call setline(".", new_line)
 endfunction
 
-" PLG 
+" PLG
 let g:data_dir = g:env.lua ? stdpath('data') . '/site' : '~/.vim'
 let plug_installed = ! empty(glob(data_dir . '/autoload/plug.vim'))
 
@@ -153,9 +149,6 @@ if plug_installed
 
     "" Surround: cs'", ysiw], ds
     Plug 'tpope/vim-surround'
-
-    "" Commentary: gcc, gc // NOTE: Now in core vim and neovim
-"    Plug 'tpope/vim-commentary', Cond(!g:env.vsc)
 
     "" Telescope: Fuzzy Finding only on Neovim
     Plug 'nvim-lua/plenary.nvim', Cond(g:env.nvm)
