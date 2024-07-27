@@ -35,6 +35,8 @@ if !g:env.emb
     set scrolloff=8
     set splitright
     set splitbelow
+
+    color slate
 endif
 
 " REMAPS
@@ -163,13 +165,7 @@ if plug_installed
         nnoremap <C-f> :Telescope live_grep<CR>
     endif
 
-    Plug 'lifepillar/vim-solarized8', Cond(!g:env.emb)
-    
     call plug#end()
 endif
 
-if !g:env.emb
-    set background=light
-    colorscheme solarized8
-endif
 
