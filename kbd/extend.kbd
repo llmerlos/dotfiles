@@ -13,6 +13,13 @@
 )
 (defalias
    ext (layer-toggle extend) 
+   wl C-left
+   wr C-rght
+   lu A-up
+   ld A-down
+   vl C-M-left
+   vr C-M-rght
+   vu M-tab
 )
 (deflayer base
   _    _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
@@ -24,11 +31,11 @@
        _    _              _                   _    _    _               _    _    _     _    _   
 )
 (deflayer extend
-  _    _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
+  caps _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
 
-  caps _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
-  esc  home up   end  _    _    kp-  7    8    9    kp+  _    _    _     _    _    _     _    _    _    _
-  _    left down rght _    _    kp*  4    5    6    0    _    _                          _    _    _
-  _    pgup _    pgdn del  _    kp.  1    2    3    kp/  _                    _          _    _    _    _
+  del  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _     _    _    _     _    _    _    _
+  esc  home up   end  pgup @lu  kp+  7    8    9    kp-  _    _    _     _    _    _     _    _    _    _
+  _    left down rght pgdn @ld  .    4    5    6    0    ,    _                          _    _    _
+  _    @wl  @wr  @vl  @vr  @vu  kp*  1    2    3    kp/  _                    _          _    _    _    _
        _    _              _                   _    _    _               _    _    _     _    _   
 )
