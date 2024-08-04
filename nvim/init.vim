@@ -34,7 +34,6 @@ if !g:env.emb
     set number
     set relativenumber
     set nowrap
-    color slate
 endif
 
 " REMAPS
