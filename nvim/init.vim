@@ -34,6 +34,7 @@ if !g:env.emb
     set number
     set relativenumber
     set nowrap
+    "color slate
 endif
 
 " REMAPS
@@ -149,12 +150,12 @@ if plug_installed
     "" Surround: cs'", ysiw], ds
     Plug 'tpope/vim-surround'
 
-    "" Telescope: Fuzzy Finding only on Neovim
-    Plug 'nvim-lua/plenary.nvim', Cond(g:env.nvm)
-    Plug 'nvim-telescope/telescope.nvim', Cond(g:env.nvm, { 'tag': '0.1.8' })
+    "" FZF: Fuzzy finder
+    Plug 'junegunn/fzf', Cond(g:env.nvm, { 'do': { -> fzf#install() } })
+    Plug 'junegunn/fzf.vim', Cond(g:env.nvm)
     if g:env.nvm
-        nnoremap <C-p> :Telescope find_files<CR>
-        nnoremap <C-f> :Telescope live_grep<CR>
+        nnoremap <C-p> :Files<CR>
+        nnoremap <C-f> :Rg<CR>
     endif
 
     call plug#end()

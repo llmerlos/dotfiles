@@ -1,5 +1,6 @@
 # To reload: & $profile
 New-Alias ll Get-ChildItem
+New-Alias which Get-Command
 New-Alias v nvim
 New-Alias vg nvim-qt
 
