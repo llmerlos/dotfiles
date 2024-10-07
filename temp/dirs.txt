@@ -1,2 +1,0 @@
-Windows (Admin CMD): mklink /H {Target} {File}
-mklink /H AppData\Local\nvim\init.vim dotfiles\nvim\init.vim

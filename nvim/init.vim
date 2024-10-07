@@ -2,8 +2,8 @@
 let g:env = {'lua' :  has('nvim')}
 let g:env.vsc = exists('g:vscode')
 let g:env.itj = has('ide')
-let g:env.nvm = g:env.lua && !env.vsc 
-let g:env.vim = !g:env.lua && !env.itj
+let g:env.nvm = g:env.lua && (env.vsc == 0)
+let g:env.vim = (g:env.lua == 0) && (env.itj == 0)
 let g:env.emb = g:env.vsc || g:env.itj
 
 " OPTIONS
@@ -25,7 +25,7 @@ set scrolloff=8
 set splitright
 set splitbelow
 
-if !g:env.emb 
+if g:env.vsc == 0 
     syntax on
     filetype plugin indent on
     set title
@@ -100,11 +100,6 @@ noremap     <leader>D          D
 vnoremap    p                  "_dP
 
 " SNIPS
-"" Checkbox ( https://marcelfischer.eu/blog/2019/checkbox-regex/ )
-noremap    <leader>ti    :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze./[<space>]<space>/<CR> <bar> :nohls<CR>
-noremap    <leader>tc    :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze./[x]<space>/<CR> <bar> :nohls<CR>
-noremap    <leader>td    :s/^\s*\(-<space>\\|\*<space>\)\?\zs\(\[[^\]]*\]<space>\)\?\ze.//<CR> <bar> :nohls<CR>
-
 "" Boolean Toggle
 noremap     -                  :call ToggleBoolean()<CR>
 function! ToggleBoolean()
@@ -126,16 +121,16 @@ function! ToggleBoolean()
     call setline(".", new_line)
 endfunction
 
-" PLG
+" PLG https://github.com/junegunn/vim-plug?tab=readme-ov-file#installation
 let g:data_dir = g:env.lua ? stdpath('data') . '/site' : '~/.vim'
-let plug_installed = ! empty(glob(data_dir . '/autoload/plug.vim'))
+let plug_installed = (empty(glob(data_dir . '/autoload/plug.vim')) == 0)
 
 function! PLGSetup()
     execute '!curl -fLo '. g:data_dir . '/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 endfunction
 :command PlugSetup call PLGSetup()<CR>
 
-if plug_installed
+if (plug_installed || g:env.itj)
     call plug#begin()
     function! Cond(cond, ...)
         let opts = get(a:000, 0, {})
@@ -160,5 +155,3 @@ if plug_installed
 
     call plug#end()
 endif
-
-
