@@ -9,9 +9,6 @@
     "files.exclude": {
         "**/desktop.ini": true
     },
-    "files.associations": {
-        "*.veo": "verilog"
-    },
     "editor.fontSize": 13,
     "editor.cursorSmoothCaretAnimation": "on",
     "editor.smoothScrolling": true,
@@ -23,7 +20,6 @@
     "workbench.editor.enablePreview": false,
     "workbench.list.smoothScrolling": true,
     "workbench.layoutControl.enabled": false,
-    "workbench.colorTheme": "Solarized Light",
     "terminal.integrated.smoothScrolling": true,
     "terminal.integrated.inheritEnv": false,
     "security.workspace.trust.untrustedFiles": "open",
@@ -41,5 +37,4 @@
     "vscode-neovim.ctrlKeysForNormalMode": [
         "a", "d", "e", "i", "j", "o", "t", "u", "v", "w", "x", "y", "z", "/" 
     ],
-    "latex-workshop.view.pdf.internal.synctex.keybinding": "double-click",
 }
